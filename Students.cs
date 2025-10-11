@@ -14,6 +14,10 @@ namespace CFCA_ADMIN
 {
     public partial class Students : UserControl
     {
+        // Fixed dimensions for student photos
+        private const int PHOTO_WIDTH = 60;
+        private const int PHOTO_HEIGHT = 60;
+
         public Students()
         {
             InitializeComponent();
@@ -23,6 +27,23 @@ namespace CFCA_ADMIN
         {
             cbGradeLevel.SelectedIndex = 0;
             LoadStudentData();
+
+            // Set cursor to hand pointer for photo column
+            dtgStudents.CellMouseEnter += DtgStudents_CellMouseEnter;
+            dtgStudents.CellMouseLeave += DtgStudents_CellMouseLeave;
+        }
+
+        private void DtgStudents_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == 0) // Photo column
+            {
+                dtgStudents.Cursor = Cursors.Hand;
+            }
+        }
+
+        private void DtgStudents_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            dtgStudents.Cursor = Cursors.Default;
         }
 
         private void LoadStudentData(string gradeFilter = "All", string searchKeyword = "")
@@ -39,6 +60,7 @@ namespace CFCA_ADMIN
                         CONCAT(surname, ' ', first_name, ' ', middle_name) AS name,
                         gender, age, strand,
                         COALESCE(payment_status, 'Not Paid') AS payment_status,
+                        student_photo,
                         id_photo_filename
                     FROM students
                     WHERE 1=1";
@@ -71,16 +93,11 @@ namespace CFCA_ADMIN
                             dtgStudents.Rows.Clear();
                             while (reader.Read())
                             {
-                                // Load image from LONGBLOB data
-                                Image studentPhoto = null;
-                                if (reader["id_photo_filename"] != DBNull.Value)
-                                {
-                                    byte[] imageBytes = (byte[])reader["id_photo_filename"];
-                                    studentPhoto = ByteArrayToImage(imageBytes);
-                                }
+                                // Load student photo with fixed size
+                                Image studentPhoto = LoadStudentPhoto(reader);
 
                                 dtgStudents.Rows.Add(
-                                    studentPhoto,  // Photo column (first column now)
+                                    studentPhoto,  // Photo column (first column)
                                     reader["id"].ToString(),
                                     reader["name"].ToString(),
                                     reader["level_applied"].ToString(),
@@ -102,6 +119,75 @@ namespace CFCA_ADMIN
         }
 
         /// <summary>
+        /// Load student photo from database and resize to fixed dimensions
+        /// </summary>
+        private Image LoadStudentPhoto(MySqlDataReader reader)
+        {
+            try
+            {
+                Image originalImage = null;
+
+                // First try to get student_photo
+                if (reader["student_photo"] != DBNull.Value)
+                {
+                    byte[] imageBytes = (byte[])reader["student_photo"];
+                    originalImage = ByteArrayToImage(imageBytes);
+                }
+                // If student_photo is not available, try id_photo_filename
+                else if (reader["id_photo_filename"] != DBNull.Value)
+                {
+                    byte[] imageBytes = (byte[])reader["id_photo_filename"];
+                    originalImage = ByteArrayToImage(imageBytes);
+                }
+
+                if (originalImage != null)
+                {
+                    // Resize image to fixed dimensions
+                    Image resizedImage = ResizeImage(originalImage, PHOTO_WIDTH, PHOTO_HEIGHT);
+                    originalImage.Dispose(); // Dispose the original to free memory
+                    return resizedImage;
+                }
+
+                // If no photo in database, return default image
+                return GetDefaultImage();
+            }
+            catch (Exception ex)
+            {
+                // Log error and return default image
+                Console.WriteLine("Error loading student photo: " + ex.Message);
+                return GetDefaultImage();
+            }
+        }
+
+        /// <summary>
+        /// Resize image to fixed dimensions while maintaining aspect ratio
+        /// </summary>
+        private Image ResizeImage(Image image, int width, int height)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
+        }
+
+        /// <summary>
         /// Convert byte array from database BLOB to Image
         /// </summary>
         private Image ByteArrayToImage(byte[] byteArray)
@@ -118,9 +204,131 @@ namespace CFCA_ADMIN
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error converting byte array to image: {ex.Message}");
-                return null;
+                Console.WriteLine("Error converting byte array to image: " + ex.Message);
+                return GetDefaultImage();
             }
+        }
+
+        /// <summary>
+        /// Get default no-image photo with fixed size
+        /// </summary>
+        private Image GetDefaultImage()
+        {
+            try
+            {
+                string defaultImagePath = Path.Combine(Application.StartupPath, "Resources", "no-image.png");
+                if (File.Exists(defaultImagePath))
+                {
+                    Image defaultImage = Image.FromFile(defaultImagePath);
+                    return ResizeImage(defaultImage, PHOTO_WIDTH, PHOTO_HEIGHT);
+                }
+
+                // If file doesn't exist, create a simple placeholder image with fixed size
+                Bitmap placeholder = new Bitmap(PHOTO_WIDTH, PHOTO_HEIGHT);
+                using (Graphics g = Graphics.FromImage(placeholder))
+                {
+                    g.Clear(Color.LightGray);
+                    using (Font font = new Font("Arial", 8))
+                    using (StringFormat sf = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                    {
+                        g.DrawString("No Image", font, Brushes.Black, new RectangleF(0, 0, PHOTO_WIDTH, PHOTO_HEIGHT), sf);
+                    }
+                }
+                return placeholder;
+            }
+            catch
+            {
+                // Final fallback - create a basic bitmap with fixed size
+                return new Bitmap(PHOTO_WIDTH, PHOTO_HEIGHT);
+            }
+        }
+
+        /// <summary>
+        /// Get full-size original photo from database
+        /// </summary>
+        private Image GetFullSizePhoto(string studentID)
+        {
+            using (MySqlConnection conn = Database.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"SELECT student_photo, id_photo_filename 
+                                   FROM students 
+                                   WHERE COALESCE(student_number, lrn, application_no) = @id";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", studentID);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                // First try to get student_photo
+                                if (reader["student_photo"] != DBNull.Value)
+                                {
+                                    byte[] imageBytes = (byte[])reader["student_photo"];
+                                    return ByteArrayToImage(imageBytes);
+                                }
+                                // If student_photo is not available, try id_photo_filename
+                                else if (reader["id_photo_filename"] != DBNull.Value)
+                                {
+                                    byte[] imageBytes = (byte[])reader["id_photo_filename"];
+                                    return ByteArrayToImage(imageBytes);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading full-size photo: " + ex.Message);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Show full-size photo in a modal dialog
+        /// </summary>
+        private void ShowPhotoViewer(string studentID, string studentName)
+        {
+            Image fullPhoto = GetFullSizePhoto(studentID);
+
+            if (fullPhoto == null)
+            {
+                MessageBox.Show("No photo available for this student.", "No Photo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Create a form to display the photo
+            Form photoViewer = new Form
+            {
+                Text = $"Student Photo - {studentName}",
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                BackColor = Color.White,
+                Size = new Size(Math.Min(fullPhoto.Width + 40, 800), Math.Min(fullPhoto.Height + 80, 600))
+            };
+
+            PictureBox pictureBox = new PictureBox
+            {
+                Image = fullPhoto,
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Dock = DockStyle.Fill
+            };
+
+            photoViewer.Controls.Add(pictureBox);
+
+            // Dispose the image when form closes
+            photoViewer.FormClosed += (s, e) => {
+                pictureBox.Image = null;
+                fullPhoto?.Dispose();
+            };
+
+            photoViewer.ShowDialog();
         }
 
         private void tbSearch_TextChanged(object sender, EventArgs e)
@@ -157,12 +365,18 @@ namespace CFCA_ADMIN
         {
             if (e.RowIndex < 0) return;
 
-            // Note: Column indices shifted by 1 because photo is now first column
             string studentID = dtgStudents.Rows[e.RowIndex].Cells["id"].Value?.ToString();
             string name = dtgStudents.Rows[e.RowIndex].Cells["name"].Value?.ToString();
             string gradeLevel = dtgStudents.Rows[e.RowIndex].Cells["Grades"].Value?.ToString();
             string columnName = dtgStudents.Columns[e.ColumnIndex].Name;
             string strand = dtgStudents.Rows[e.RowIndex].Cells["strand"].Value?.ToString();
+
+            // Check if photo column was clicked (first column, index 0)
+            if (e.ColumnIndex == 0)
+            {
+                ShowPhotoViewer(studentID, name);
+                return;
+            }
 
             if (columnName == "btnConfirm")
             {
@@ -270,6 +484,11 @@ namespace CFCA_ADMIN
             string selectedGrade = cbGradeLevel.SelectedItem.ToString();
             string searchKeyword = tbSearch.Text.Trim();
             LoadStudentData(selectedGrade, searchKeyword);
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -250,5 +250,50 @@ namespace CFCA_ADMIN
             isSubMenuVisible = false;
             AdjustSidebarButtons();
         }
+
+        private void xbtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void maxbtn_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+
+        private void minbtn_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void xbtn_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void maxbtn_Click_1(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
     }
 }

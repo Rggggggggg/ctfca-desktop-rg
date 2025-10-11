@@ -139,7 +139,7 @@ namespace CFCA_ADMIN
 
                     string transferQuery = @"
                         INSERT INTO students 
-                            (student_number, application_no, grade_level, strand, surname, first_name, middle_name, age, gender, email, contact, telephone, cellphone)
+                            (student_number, application_no, grade_level, strand, surname, first_name, middle_name, age, gender, email, contact, telephone, cellphone, id_photo_filename)
                         SELECT 
                             student_number,
                             application_no,
@@ -153,7 +153,8 @@ namespace CFCA_ADMIN
                             shsEmail,
                             COALESCE(shsCellphone, shsTelephone, '') AS contact,
                             shsTelephone,
-                            shsCellphone
+                            shsCellphone,
+                            id_photo_filename
                         FROM shs_enrollments 
                         WHERE student_number = @student_number";
 

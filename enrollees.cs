@@ -80,28 +80,34 @@ namespace CFCA_ADMIN
 
             if (dtgEnrollees.Columns.Contains("colEmail"))
                 dtgEnrollees.Columns["colEmail"].Visible = false;
+
+            // ✅ Add "View Info" button column (if not already added)
+            if (!dtgEnrollees.Columns.Contains("btnViewInfo"))
+            {
+                DataGridViewButtonColumn btnViewInfo = new DataGridViewButtonColumn();
+                btnViewInfo.HeaderText = "Action";
+                btnViewInfo.Name = "btnViewInfo";
+                btnViewInfo.Text = "View Info";
+                btnViewInfo.UseColumnTextForButtonValue = true;
+
+                // Insert after "Submitted At" (index 6)
+                dtgEnrollees.Columns.Insert(7, btnViewInfo);
+            }
         }
 
         private void DtgEnrollees_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // FIX: Check if the click is on a valid row and column
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            // FIX: Use the actual column index instead of column names to avoid null reference issues
             DataGridViewRow row = dtgEnrollees.Rows[e.RowIndex];
-
-            // Check if the row has cells and the cells have values
             if (row.Cells.Count <= 0) return;
 
-            string studentNumber = row.Cells[0].Value?.ToString(); // colStudentNumber is index 0
-            string name = row.Cells[1].Value?.ToString(); // colName is index 1
-            string email = row.Cells[7].Value?.ToString(); // colEmail is index 7
-            string yearLevel = row.Cells[2].Value?.ToString(); // colLevelApplied is index 2
+            string studentNumber = row.Cells[0].Value?.ToString();
+            string name = row.Cells[1].Value?.ToString();
+            string email = row.Cells[7].Value?.ToString();
+            string yearLevel = row.Cells[2].Value?.ToString();
 
-            // FIX: Use column index instead of name for button detection
             string columnName = dtgEnrollees.Columns[e.ColumnIndex].Name;
-
-            // FIX: Add null checks before processing
             if (string.IsNullOrEmpty(studentNumber)) return;
 
             if (columnName == "btnConfirm")
@@ -112,18 +118,20 @@ namespace CFCA_ADMIN
             {
                 RejectEnrollment(studentNumber, name, email, yearLevel);
             }
+            else if (columnName == "btnViewInfo")
+            {
+                ViewEnrollmentDetails(studentNumber);
+            }
         }
 
         private async void ConfirmEnrollment(string studentNumber, string name, string email, string yearLevel)
         {
-            // FIX: Add null/empty checks
             if (string.IsNullOrEmpty(studentNumber))
             {
                 MessageBox.Show("Invalid student record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // 🔹 Ask admin before approving
             DialogResult result = MessageBox.Show(
                 $"Are you sure you want to approve this student: {name}?",
                 "Confirm Approval",
@@ -185,10 +193,8 @@ namespace CFCA_ADMIN
             }
         }
 
-
         private async void RejectEnrollment(string studentNumber, string name, string email, string yearLevel)
         {
-            // FIX: Add null/empty checks
             if (string.IsNullOrEmpty(studentNumber))
             {
                 MessageBox.Show("Invalid student record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -272,13 +278,142 @@ namespace CFCA_ADMIN
             }
         }
 
+        private void ViewEnrollmentDetails(string studentNumber)
+        {
+            if (string.IsNullOrEmpty(studentNumber))
+            {
+                MessageBox.Show("Invalid student record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (MySqlConnection conn = Database.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "SELECT * FROM basic_ed_enrollment WHERE student_number = @student_number";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@student_number", studentNumber);
+
+                    DataTable dt = new DataTable();
+                    new MySqlDataAdapter(cmd).Fill(dt);
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Student record not found.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    DataRow r = dt.Rows[0];
+
+                    // --- Fetch Siblings ---
+                    string siblingQuery = @"
+                SELECT name, grade_occupation 
+                FROM basic_ed_siblings 
+                WHERE enrollment_id = (SELECT id FROM basic_ed_enrollment WHERE student_number = @student_number)";
+                    MySqlCommand siblingCmd = new MySqlCommand(siblingQuery, conn);
+                    siblingCmd.Parameters.AddWithValue("@student_number", studentNumber);
+                    DataTable sibs = new DataTable();
+                    new MySqlDataAdapter(siblingCmd).Fill(sibs);
+
+                    // Build HTML-like formatted text (for landscape look)
+                    StringBuilder info = new StringBuilder();
+
+                    info.AppendLine("==============================================");
+                    info.AppendLine("               STUDENT INFORMATION             ");
+                    info.AppendLine("==============================================");
+                    info.AppendLine($"Student Number: {r["student_number"]}      LRN: {r["lrn"]}");
+                    info.AppendLine($"Name: {r["surname"]}, {r["first_name"]} {r["middle_name"]}");
+                    info.AppendLine($"Level Applied: {r["level_applied"]}      Registrar Level: {r["level_for_registrar"]}");
+                    info.AppendLine($"Gender: {r["gender"]}      Age: {r["age"]}      DOB: {r["dob"]:d}");
+                    info.AppendLine($"Citizenship: {r["citizenship"]}      Religion: {r["religion"]}");
+                    info.AppendLine($"Contact: {r["contact"]}      Email: {r["email"]}");
+                    info.AppendLine($"Address: {r["address"]}");
+                    info.AppendLine();
+
+                    info.AppendLine("==============================================");
+                    info.AppendLine("             FAMILY INFORMATION               ");
+                    info.AppendLine("==============================================");
+                    info.AppendLine($"Father: {r["father_name"]} ({r["father_occupation"]})");
+                    info.AppendLine($"Mother: {r["mother_name"]} ({r["mother_occupation"]})");
+                    info.AppendLine($"Guardian: {r["guardian_name"]} ({r["guardian_relation"]})");
+                    info.AppendLine($"Guardian Contact: {r["guardian_contact"]}");
+                    info.AppendLine();
+
+                    // ✅ Add siblings inline
+                    if (sibs.Rows.Count > 0)
+                    {
+                        info.Append("Siblings: ");
+                        for (int i = 0; i < sibs.Rows.Count; i++)
+                        {
+                            info.Append($"{sibs.Rows[i]["name"]} ({sibs.Rows[i]["grade_occupation"]})");
+                            if (i < sibs.Rows.Count - 1) info.Append(" | ");
+                        }
+                        info.AppendLine();
+                    }
+                    else
+                    {
+                        info.AppendLine("Siblings: None recorded.");
+                    }
+                    info.AppendLine();
+
+                    info.AppendLine("==============================================");
+                    info.AppendLine("           EDUCATIONAL BACKGROUND             ");
+                    info.AppendLine("==============================================");
+                    info.AppendLine($"Prev School: {r["prev_school"]}");
+                    info.AppendLine($"Prev Grade: {r["prev_grade"]}      SY: {r["prev_sy"]}");
+                    info.AppendLine($"Prev Address: {r["prev_school_addr"]}");
+                    info.AppendLine($"Prev CTFC-AI Student: {r["prev_ctfcai"]}");
+                    info.AppendLine();
+
+                    info.AppendLine("==============================================");
+                    info.AppendLine("        HEALTH & EMERGENCY INFORMATION        ");
+                    info.AppendLine("==============================================");
+                    info.AppendLine($"Health Conditions: {r["health_conditions"]}");
+                    info.AppendLine($"Emergency Contact: {r["emergency_name"]} ({r["emergency_contact"]})");
+                    info.AppendLine($"Address: {r["emergency_address"]}");
+                    info.AppendLine();
+
+                    info.AppendLine("==============================================");
+                    info.AppendLine("            ENROLLMENT DETAILS                ");
+                    info.AppendLine("==============================================");
+                    info.AppendLine($"Status: {r["enrollment_status"]}      SY: {r["school_year"]}");
+                    info.AppendLine($"Submitted: {Convert.ToDateTime(r["submitted_at"]).ToString("MM/dd/yyyy hh:mm tt")}");
+                    info.AppendLine();
+
+                    // === Display in scrollable form ===
+                    Form infoForm = new Form();
+                    infoForm.Text = $"Student Info - {r["student_number"]}";
+                    infoForm.Size = new Size(900, 600);
+                    infoForm.StartPosition = FormStartPosition.CenterScreen;
+
+                    TextBox txt = new TextBox();
+                    txt.Multiline = true;
+                    txt.ScrollBars = ScrollBars.Vertical;
+                    txt.ReadOnly = true;
+                    txt.Font = new Font("Consolas", 10);
+                    txt.Dock = DockStyle.Fill;
+                    txt.Text = info.ToString();
+
+                    infoForm.Controls.Add(txt);
+                    infoForm.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading details: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
         private void TbSearch_TextChanged(object sender, EventArgs e)
         {
             string filterText = tbSearch.Text.ToLower();
 
             foreach (DataGridViewRow row in dtgEnrollees.Rows)
             {
-                if (row.Cells.Count < 3) continue; // Ensure we have enough cells
+                if (row.Cells.Count < 3) continue;
 
                 string studentNumber = row.Cells[0].Value?.ToString().ToLower() ?? "";
                 string levelApplied = row.Cells[2].Value?.ToString().ToLower() ?? "";

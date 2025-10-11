@@ -48,7 +48,7 @@ namespace CFCA_ADMIN
             this.studentID = actualStudentId;
 
             // Debug message to verify correct ID
-            MessageBox.Show($"Student ID resolved to: {actualStudentId}\nOriginal ID: {studentID}", "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
 
             if (IsSHS())
             {

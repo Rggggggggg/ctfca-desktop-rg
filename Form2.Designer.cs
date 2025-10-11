@@ -32,33 +32,38 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblRole = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.pic = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.lblName = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblAdmin = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.panelSubEnrollees = new System.Windows.Forms.Panel();
-            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.panelContainer = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
-            this.pic = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnStudents = new Guna.UI2.WinForms.Guna2Button();
+            this.btnEnrollment = new Guna.UI2.WinForms.Guna2Button();
             this.btnSubjects = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
+            this.panelSubEnrollees = new System.Windows.Forms.Panel();
             this.btnSHS = new Guna.UI2.WinForms.Guna2Button();
             this.btnJHS = new Guna.UI2.WinForms.Guna2Button();
             this.btnBasicEd = new Guna.UI2.WinForms.Guna2Button();
             this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnInstructor = new Guna.UI2.WinForms.Guna2Button();
             this.btnAdmin = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnSchedule = new Guna.UI2.WinForms.Guna2Button();
             this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnNewEnrollees = new Guna.UI2.WinForms.Guna2Button();
-            this.btnEnrollment = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
+            this.maxbtn = new Guna.UI2.WinForms.Guna2Button();
+            this.xbtn = new Guna.UI2.WinForms.Guna2Button();
+            this.panelContainer = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
             this.guna2Panel2.SuspendLayout();
             this.panelSubEnrollees.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2Panel1
@@ -71,31 +76,47 @@
             this.guna2Panel1.Controls.Add(this.lblAdmin);
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.guna2Panel1.FillColor = System.Drawing.Color.White;
-            this.guna2Panel1.Location = new System.Drawing.Point(281, 0);
-            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Panel1.Location = new System.Drawing.Point(281, 39);
+            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(1162, 81);
             this.guna2Panel1.TabIndex = 4;
             // 
             // lblRole
             // 
+            this.lblRole.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRole.BackColor = System.Drawing.Color.Transparent;
             this.lblRole.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblRole.Location = new System.Drawing.Point(996, 43);
-            this.lblRole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblRole.Margin = new System.Windows.Forms.Padding(4);
             this.lblRole.Name = "lblRole";
             this.lblRole.Size = new System.Drawing.Size(29, 21);
             this.lblRole.TabIndex = 3;
             this.lblRole.Text = "Role";
             this.lblRole.Click += new System.EventHandler(this.lblRole_Click);
             // 
+            // pic
+            // 
+            this.pic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pic.BackColor = System.Drawing.Color.Transparent;
+            this.pic.ImageRotate = 0F;
+            this.pic.Location = new System.Drawing.Point(932, 14);
+            this.pic.Margin = new System.Windows.Forms.Padding(4);
+            this.pic.Name = "pic";
+            this.pic.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.pic.Size = new System.Drawing.Size(53, 49);
+            this.pic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic.TabIndex = 2;
+            this.pic.TabStop = false;
+            // 
             // lblName
             // 
+            this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblName.BackColor = System.Drawing.Color.Transparent;
             this.lblName.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblName.Location = new System.Drawing.Point(996, 17);
-            this.lblName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblName.Margin = new System.Windows.Forms.Padding(4);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(39, 19);
             this.lblName.TabIndex = 1;
@@ -107,7 +128,7 @@
             this.lblAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAdmin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
             this.lblAdmin.Location = new System.Drawing.Point(23, 25);
-            this.lblAdmin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblAdmin.Margin = new System.Windows.Forms.Padding(4);
             this.lblAdmin.Name = "lblAdmin";
             this.lblAdmin.Size = new System.Drawing.Size(137, 32);
             this.lblAdmin.TabIndex = 0;
@@ -115,6 +136,7 @@
             // 
             // guna2Panel2
             // 
+            this.guna2Panel2.AutoScroll = true;
             this.guna2Panel2.BackColor = System.Drawing.Color.Transparent;
             this.guna2Panel2.BorderColor = System.Drawing.Color.Gainsboro;
             this.guna2Panel2.BorderThickness = 1;
@@ -133,80 +155,12 @@
             this.guna2Panel2.Controls.Add(this.btnNewEnrollees);
             this.guna2Panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.guna2Panel2.FillColor = System.Drawing.Color.White;
-            this.guna2Panel2.Location = new System.Drawing.Point(0, 0);
-            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Panel2.Location = new System.Drawing.Point(0, 39);
+            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(281, 828);
+            this.guna2Panel2.Size = new System.Drawing.Size(281, 789);
             this.guna2Panel2.TabIndex = 3;
             this.guna2Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel2_Paint);
-            // 
-            // panelSubEnrollees
-            // 
-            this.panelSubEnrollees.BackColor = System.Drawing.Color.Transparent;
-            this.panelSubEnrollees.Controls.Add(this.btnSHS);
-            this.panelSubEnrollees.Controls.Add(this.btnJHS);
-            this.panelSubEnrollees.Controls.Add(this.btnBasicEd);
-            this.panelSubEnrollees.Location = new System.Drawing.Point(3, 383);
-            this.panelSubEnrollees.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panelSubEnrollees.Name = "panelSubEnrollees";
-            this.panelSubEnrollees.Size = new System.Drawing.Size(275, 182);
-            this.panelSubEnrollees.TabIndex = 0;
-            this.panelSubEnrollees.Visible = false;
-            this.panelSubEnrollees.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // guna2HtmlLabel2
-            // 
-            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(72)))), ((int)(((byte)(77)))));
-            this.guna2HtmlLabel2.Location = new System.Drawing.Point(185, 43);
-            this.guna2HtmlLabel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(41, 32);
-            this.guna2HtmlLabel2.TabIndex = 6;
-            this.guna2HtmlLabel2.Text = "CA";
-            // 
-            // guna2HtmlLabel1
-            // 
-            this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.guna2HtmlLabel1.Location = new System.Drawing.Point(127, 43);
-            this.guna2HtmlLabel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            this.guna2HtmlLabel1.Size = new System.Drawing.Size(57, 32);
-            this.guna2HtmlLabel1.TabIndex = 5;
-            this.guna2HtmlLabel1.Text = "CTF";
-            // 
-            // panelContainer
-            // 
-            this.panelContainer.BorderThickness = 1;
-            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContainer.FillColor = System.Drawing.Color.WhiteSmoke;
-            this.panelContainer.Location = new System.Drawing.Point(281, 81);
-            this.panelContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(1162, 747);
-            this.panelContainer.TabIndex = 13;
-            this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint_1);
-            // 
-            // guna2AnimateWindow1
-            // 
-            this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
-            this.guna2AnimateWindow1.TargetForm = this;
-            // 
-            // pic
-            // 
-            this.pic.BackColor = System.Drawing.Color.Transparent;
-            this.pic.ImageRotate = 0F;
-            this.pic.Location = new System.Drawing.Point(932, 14);
-            this.pic.Margin = new System.Windows.Forms.Padding(4);
-            this.pic.Name = "pic";
-            this.pic.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.pic.Size = new System.Drawing.Size(53, 49);
-            this.pic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pic.TabIndex = 2;
-            this.pic.TabStop = false;
             // 
             // btnStudents
             // 
@@ -234,6 +188,33 @@
             this.btnStudents.Text = "Students";
             this.btnStudents.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnStudents.Click += new System.EventHandler(this.btnStudents_Click);
+            // 
+            // btnEnrollment
+            // 
+            this.btnEnrollment.BackColor = System.Drawing.Color.Transparent;
+            this.btnEnrollment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(130)))), ((int)(((byte)(254)))));
+            this.btnEnrollment.BorderRadius = 10;
+            this.btnEnrollment.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnEnrollment.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(130)))), ((int)(((byte)(254)))));
+            this.btnEnrollment.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnEnrollment.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
+            this.btnEnrollment.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollment.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollment.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnEnrollment.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnEnrollment.FillColor = System.Drawing.Color.Transparent;
+            this.btnEnrollment.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEnrollment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
+            this.btnEnrollment.Image = ((System.Drawing.Image)(resources.GetObject("btnEnrollment.Image")));
+            this.btnEnrollment.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnEnrollment.Location = new System.Drawing.Point(7, 740);
+            this.btnEnrollment.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEnrollment.Name = "btnEnrollment";
+            this.btnEnrollment.Size = new System.Drawing.Size(257, 50);
+            this.btnEnrollment.TabIndex = 8;
+            this.btnEnrollment.Text = "Enrollment";
+            this.btnEnrollment.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnEnrollment.Click += new System.EventHandler(this.btnEnrollment_Click);
             // 
             // btnSubjects
             // 
@@ -280,14 +261,28 @@
             this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
             this.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnLogout.Location = new System.Drawing.Point(0, 778);
+            this.btnLogout.Location = new System.Drawing.Point(0, 790);
             this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(281, 50);
+            this.btnLogout.Size = new System.Drawing.Size(278, 50);
             this.btnLogout.TabIndex = 7;
             this.btnLogout.Text = "Logout";
             this.btnLogout.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // panelSubEnrollees
+            // 
+            this.panelSubEnrollees.BackColor = System.Drawing.Color.Transparent;
+            this.panelSubEnrollees.Controls.Add(this.btnSHS);
+            this.panelSubEnrollees.Controls.Add(this.btnJHS);
+            this.panelSubEnrollees.Controls.Add(this.btnBasicEd);
+            this.panelSubEnrollees.Location = new System.Drawing.Point(3, 383);
+            this.panelSubEnrollees.Margin = new System.Windows.Forms.Padding(4);
+            this.panelSubEnrollees.Name = "panelSubEnrollees";
+            this.panelSubEnrollees.Size = new System.Drawing.Size(275, 182);
+            this.panelSubEnrollees.TabIndex = 0;
+            this.panelSubEnrollees.Visible = false;
+            this.panelSubEnrollees.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // btnSHS
             // 
@@ -400,6 +395,18 @@
             this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
             // 
+            // guna2HtmlLabel2
+            // 
+            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(72)))), ((int)(((byte)(77)))));
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(185, 43);
+            this.guna2HtmlLabel2.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(41, 32);
+            this.guna2HtmlLabel2.TabIndex = 6;
+            this.guna2HtmlLabel2.Text = "CA";
+            // 
             // btnInstructor
             // 
             this.btnInstructor.BackColor = System.Drawing.Color.Transparent;
@@ -453,6 +460,18 @@
             this.btnAdmin.Text = "Admin";
             this.btnAdmin.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnAdmin.Click += new System.EventHandler(this.btnAdmin_Click);
+            // 
+            // guna2HtmlLabel1
+            // 
+            this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.guna2HtmlLabel1.Location = new System.Drawing.Point(127, 43);
+            this.guna2HtmlLabel1.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
+            this.guna2HtmlLabel1.Size = new System.Drawing.Size(57, 32);
+            this.guna2HtmlLabel1.TabIndex = 5;
+            this.guna2HtmlLabel1.Text = "CTF";
             // 
             // btnSchedule
             // 
@@ -522,55 +541,111 @@
             this.btnNewEnrollees.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnNewEnrollees.Click += new System.EventHandler(this.btnNewEnrollees_Click_1);
             // 
-            // btnEnrollment
+            // guna2AnimateWindow1
             // 
-            this.btnEnrollment.BackColor = System.Drawing.Color.Transparent;
-            this.btnEnrollment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(130)))), ((int)(((byte)(254)))));
-            this.btnEnrollment.BorderRadius = 10;
-            this.btnEnrollment.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnEnrollment.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(130)))), ((int)(((byte)(254)))));
-            this.btnEnrollment.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnEnrollment.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
-            this.btnEnrollment.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnEnrollment.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnEnrollment.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnEnrollment.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnEnrollment.FillColor = System.Drawing.Color.Transparent;
-            this.btnEnrollment.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEnrollment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
-            this.btnEnrollment.Image = ((System.Drawing.Image)(resources.GetObject("btnEnrollment.Image")));
-            this.btnEnrollment.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnEnrollment.Location = new System.Drawing.Point(7, 740);
-            this.btnEnrollment.Margin = new System.Windows.Forms.Padding(4);
-            this.btnEnrollment.Name = "btnEnrollment";
-            this.btnEnrollment.Size = new System.Drawing.Size(257, 50);
-            this.btnEnrollment.TabIndex = 8;
-            this.btnEnrollment.Text = "Enrollment";
-            this.btnEnrollment.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnEnrollment.Click += new System.EventHandler(this.btnEnrollment_Click);
+            this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
+            this.guna2AnimateWindow1.TargetForm = this;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.guna2Button2);
+            this.panel1.Controls.Add(this.maxbtn);
+            this.panel1.Controls.Add(this.xbtn);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1443, 39);
+            this.panel1.TabIndex = 0;
+            // 
+            // guna2Button2
+            // 
+            this.guna2Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2Button2.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button2.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button2.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button2.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button2.FillColor = System.Drawing.Color.White;
+            this.guna2Button2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.guna2Button2.ForeColor = System.Drawing.Color.White;
+            this.guna2Button2.Image = global::CFCA_ADMIN.Properties.Resources.minimize;
+            this.guna2Button2.Location = new System.Drawing.Point(1277, 4);
+            this.guna2Button2.Name = "guna2Button2";
+            this.guna2Button2.Size = new System.Drawing.Size(38, 32);
+            this.guna2Button2.TabIndex = 0;
+            this.guna2Button2.Click += new System.EventHandler(this.guna2Button2_Click);
+            // 
+            // maxbtn
+            // 
+            this.maxbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.maxbtn.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.maxbtn.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.maxbtn.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.maxbtn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.maxbtn.FillColor = System.Drawing.Color.White;
+            this.maxbtn.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.maxbtn.ForeColor = System.Drawing.Color.White;
+            this.maxbtn.Image = global::CFCA_ADMIN.Properties.Resources.maximize;
+            this.maxbtn.Location = new System.Drawing.Point(1333, 4);
+            this.maxbtn.Name = "maxbtn";
+            this.maxbtn.Size = new System.Drawing.Size(38, 32);
+            this.maxbtn.TabIndex = 0;
+            this.maxbtn.Click += new System.EventHandler(this.maxbtn_Click_1);
+            // 
+            // xbtn
+            // 
+            this.xbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.xbtn.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.xbtn.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.xbtn.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.xbtn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.xbtn.FillColor = System.Drawing.Color.White;
+            this.xbtn.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.xbtn.ForeColor = System.Drawing.Color.White;
+            this.xbtn.Image = global::CFCA_ADMIN.Properties.Resources.x;
+            this.xbtn.Location = new System.Drawing.Point(1393, 4);
+            this.xbtn.Name = "xbtn";
+            this.xbtn.Size = new System.Drawing.Size(38, 32);
+            this.xbtn.TabIndex = 0;
+            this.xbtn.Click += new System.EventHandler(this.xbtn_Click_1);
+            // 
+            // panelContainer
+            // 
+            this.panelContainer.BorderThickness = 1;
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.FillColor = System.Drawing.Color.WhiteSmoke;
+            this.panelContainer.Location = new System.Drawing.Point(281, 120);
+            this.panelContainer.Margin = new System.Windows.Forms.Padding(4);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(1162, 708);
+            this.panelContainer.TabIndex = 13;
+            this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint_1);
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1443, 828);
             this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);
+            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin";
             this.Load += new System.EventHandler(this.Admin_Load);
             this.guna2Panel1.ResumeLayout(false);
             this.guna2Panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic)).EndInit();
             this.guna2Panel2.ResumeLayout(false);
             this.guna2Panel2.PerformLayout();
             this.panelSubEnrollees.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -594,11 +669,15 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblName;
         private Guna.UI2.WinForms.Guna2CirclePictureBox pic;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblRole;
-        private Guna.UI2.WinForms.Guna2Panel panelContainer;
         private Guna.UI2.WinForms.Guna2Button btnLogout;
         private Guna.UI2.WinForms.Guna2Button btnSubjects;
         private Guna.UI2.WinForms.Guna2Button btnStudents;
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
         private Guna.UI2.WinForms.Guna2Button btnEnrollment;
+        private Guna.UI2.WinForms.Guna2Panel panelContainer;
+        private System.Windows.Forms.Panel panel1;
+        private Guna.UI2.WinForms.Guna2Button xbtn;
+        private Guna.UI2.WinForms.Guna2Button guna2Button2;
+        private Guna.UI2.WinForms.Guna2Button maxbtn;
     }
 }

@@ -32,18 +32,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(instructors));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dtgInstructors = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.btnNew = new Guna.UI2.WinForms.Guna2Button();
-            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.Instructors_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.image = new System.Windows.Forms.DataGridViewImageColumn();
             this.Full_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,7 +51,14 @@
             this.Grades_Handled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.btnNew = new Guna.UI2.WinForms.Guna2Button();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dtgInstructors)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtgInstructors
@@ -66,7 +69,6 @@
             this.dtgInstructors.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dtgInstructors.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dtgInstructors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
             this.dtgInstructors.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dtgInstructors.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -98,9 +100,11 @@
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dtgInstructors.DefaultCellStyle = dataGridViewCellStyle7;
+            this.dtgInstructors.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtgInstructors.EnableHeadersVisualStyles = true;
             this.dtgInstructors.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dtgInstructors.Location = new System.Drawing.Point(3, 86);
+            this.dtgInstructors.Location = new System.Drawing.Point(0, 100);
+            this.dtgInstructors.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtgInstructors.Name = "dtgInstructors";
             this.dtgInstructors.ReadOnly = true;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -112,8 +116,9 @@
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dtgInstructors.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dtgInstructors.RowHeadersVisible = false;
+            this.dtgInstructors.RowHeadersWidth = 51;
             this.dtgInstructors.RowTemplate.Height = 70;
-            this.dtgInstructors.Size = new System.Drawing.Size(865, 433);
+            this.dtgInstructors.Size = new System.Drawing.Size(1161, 569);
             this.dtgInstructors.TabIndex = 3;
             this.dtgInstructors.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dtgInstructors.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -139,8 +144,117 @@
             this.dtgInstructors.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgInstructors_CellClick);
             this.dtgInstructors.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgInstructors_CellContentClick);
             // 
+            // Instructors_ID
+            // 
+            this.Instructors_ID.FillWeight = 50F;
+            this.Instructors_ID.HeaderText = "ID";
+            this.Instructors_ID.MinimumWidth = 6;
+            this.Instructors_ID.Name = "Instructors_ID";
+            this.Instructors_ID.ReadOnly = true;
+            this.Instructors_ID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Instructors_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // image
+            // 
+            this.image.HeaderText = "Photo";
+            this.image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.image.MinimumWidth = 6;
+            this.image.Name = "image";
+            this.image.ReadOnly = true;
+            // 
+            // Full_Name
+            // 
+            this.Full_Name.FillWeight = 130F;
+            this.Full_Name.HeaderText = "Full Name";
+            this.Full_Name.MinimumWidth = 6;
+            this.Full_Name.Name = "Full_Name";
+            this.Full_Name.ReadOnly = true;
+            // 
+            // Gender
+            // 
+            this.Gender.FillWeight = 50F;
+            this.Gender.HeaderText = "Gender";
+            this.Gender.MinimumWidth = 6;
+            this.Gender.Name = "Gender";
+            this.Gender.ReadOnly = true;
+            // 
+            // Age
+            // 
+            this.Age.FillWeight = 40F;
+            this.Age.HeaderText = "Age";
+            this.Age.MinimumWidth = 6;
+            this.Age.Name = "Age";
+            this.Age.ReadOnly = true;
+            // 
+            // Contact_No
+            // 
+            this.Contact_No.FillWeight = 80F;
+            this.Contact_No.HeaderText = "Contact_No";
+            this.Contact_No.MinimumWidth = 6;
+            this.Contact_No.Name = "Contact_No";
+            this.Contact_No.ReadOnly = true;
+            // 
+            // Employment
+            // 
+            this.Employment.FillWeight = 75F;
+            this.Employment.HeaderText = "Employment";
+            this.Employment.MinimumWidth = 6;
+            this.Employment.Name = "Employment";
+            this.Employment.ReadOnly = true;
+            // 
+            // Subjects
+            // 
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Subjects.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Subjects.FillWeight = 150F;
+            this.Subjects.HeaderText = "Subjects";
+            this.Subjects.MinimumWidth = 6;
+            this.Subjects.Name = "Subjects";
+            this.Subjects.ReadOnly = true;
+            // 
+            // Grades_Handled
+            // 
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Grades_Handled.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Grades_Handled.FillWeight = 150F;
+            this.Grades_Handled.HeaderText = "Grades_Handled";
+            this.Grades_Handled.MinimumWidth = 6;
+            this.Grades_Handled.Name = "Grades_Handled";
+            this.Grades_Handled.ReadOnly = true;
+            // 
+            // Edit
+            // 
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle5.NullValue")));
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(8);
+            this.Edit.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Edit.FillWeight = 40F;
+            this.Edit.HeaderText = "";
+            this.Edit.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
+            this.Edit.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Edit.MinimumWidth = 6;
+            this.Edit.Name = "Edit";
+            this.Edit.ReadOnly = true;
+            this.Edit.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Delete
+            // 
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle6.NullValue")));
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(8);
+            this.Delete.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Delete.FillWeight = 40F;
+            this.Delete.HeaderText = "";
+            this.Delete.Image = ((System.Drawing.Image)(resources.GetObject("Delete.Image")));
+            this.Delete.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Delete.MinimumWidth = 6;
+            this.Delete.Name = "Delete";
+            this.Delete.ReadOnly = true;
+            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
             // btnNew
             // 
+            this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNew.BorderRadius = 17;
             this.btnNew.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnNew.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
@@ -151,9 +265,10 @@
             this.btnNew.ForeColor = System.Drawing.Color.White;
             this.btnNew.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.Image")));
             this.btnNew.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnNew.Location = new System.Drawing.Point(629, 47);
+            this.btnNew.Location = new System.Drawing.Point(838, 41);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(80, 33);
+            this.btnNew.Size = new System.Drawing.Size(107, 41);
             this.btnNew.TabIndex = 4;
             this.btnNew.Text = "New";
             this.btnNew.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -169,6 +284,7 @@
             this.dataGridViewImageColumn1.HeaderText = "";
             this.dataGridViewImageColumn1.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
             this.dataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.dataGridViewImageColumn1.MinimumWidth = 6;
             this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
             this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewImageColumn1.Width = 45;
@@ -183,12 +299,14 @@
             this.dataGridViewImageColumn2.HeaderText = "";
             this.dataGridViewImageColumn2.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn2.Image")));
             this.dataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.dataGridViewImageColumn2.MinimumWidth = 6;
             this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
             this.dataGridViewImageColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewImageColumn2.Width = 45;
             // 
             // tbSearch
             // 
+            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSearch.BorderRadius = 17;
             this.tbSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbSearch.DefaultText = "";
@@ -200,133 +318,48 @@
             this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tbSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.tbSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("tbSearch.IconLeft")));
-            this.tbSearch.Location = new System.Drawing.Point(715, 44);
+            this.tbSearch.Location = new System.Drawing.Point(953, 41);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.PlaceholderText = "Search";
             this.tbSearch.SelectedText = "";
-            this.tbSearch.Size = new System.Drawing.Size(153, 36);
+            this.tbSearch.Size = new System.Drawing.Size(204, 44);
             this.tbSearch.TabIndex = 5;
             this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
-            // Instructors_ID
+            // panel1
             // 
-            this.Instructors_ID.FillWeight = 50F;
-            this.Instructors_ID.HeaderText = "ID";
-            this.Instructors_ID.Name = "Instructors_ID";
-            this.Instructors_ID.ReadOnly = true;
-            this.Instructors_ID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Instructors_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Instructors_ID.Width = 45;
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.tbSearch);
+            this.panel1.Controls.Add(this.btnNew);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1161, 100);
+            this.panel1.TabIndex = 6;
             // 
-            // image
+            // panel2
             // 
-            this.image.HeaderText = "Photo";
-            this.image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.image.Name = "image";
-            this.image.ReadOnly = true;
-            this.image.Width = 105;
-            // 
-            // Full_Name
-            // 
-            this.Full_Name.FillWeight = 130F;
-            this.Full_Name.HeaderText = "Full Name";
-            this.Full_Name.Name = "Full_Name";
-            this.Full_Name.ReadOnly = true;
-            this.Full_Name.Width = 145;
-            // 
-            // Gender
-            // 
-            this.Gender.FillWeight = 50F;
-            this.Gender.HeaderText = "Gender";
-            this.Gender.Name = "Gender";
-            this.Gender.ReadOnly = true;
-            this.Gender.Width = 44;
-            // 
-            // Age
-            // 
-            this.Age.FillWeight = 40F;
-            this.Age.HeaderText = "Age";
-            this.Age.Name = "Age";
-            this.Age.ReadOnly = true;
-            this.Age.Width = 34;
-            // 
-            // Contact_No
-            // 
-            this.Contact_No.FillWeight = 80F;
-            this.Contact_No.HeaderText = "Contact_No";
-            this.Contact_No.Name = "Contact_No";
-            this.Contact_No.ReadOnly = true;
-            this.Contact_No.Width = 64;
-            // 
-            // Employment
-            // 
-            this.Employment.FillWeight = 75F;
-            this.Employment.HeaderText = "Employment";
-            this.Employment.Name = "Employment";
-            this.Employment.ReadOnly = true;
-            this.Employment.Width = 64;
-            // 
-            // Subjects
-            // 
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Subjects.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Subjects.FillWeight = 150F;
-            this.Subjects.HeaderText = "Subjects";
-            this.Subjects.Name = "Subjects";
-            this.Subjects.ReadOnly = true;
-            this.Subjects.Width = 135;
-            // 
-            // Grades_Handled
-            // 
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Grades_Handled.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Grades_Handled.FillWeight = 150F;
-            this.Grades_Handled.HeaderText = "Grades_Handled";
-            this.Grades_Handled.Name = "Grades_Handled";
-            this.Grades_Handled.ReadOnly = true;
-            this.Grades_Handled.Width = 130;
-            // 
-            // Edit
-            // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle5.NullValue")));
-            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(8);
-            this.Edit.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Edit.FillWeight = 40F;
-            this.Edit.HeaderText = "";
-            this.Edit.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
-            this.Edit.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Edit.Name = "Edit";
-            this.Edit.ReadOnly = true;
-            this.Edit.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Edit.Width = 40;
-            // 
-            // Delete
-            // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle6.NullValue")));
-            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(8);
-            this.Delete.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Delete.FillWeight = 40F;
-            this.Delete.HeaderText = "";
-            this.Delete.Image = ((System.Drawing.Image)(resources.GetObject("Delete.Image")));
-            this.Delete.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Delete.Width = 40;
+            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 669);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1161, 71);
+            this.panel2.TabIndex = 7;
             // 
             // instructors
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tbSearch);
-            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.dtgInstructors);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "instructors";
-            this.Size = new System.Drawing.Size(871, 601);
+            this.Size = new System.Drawing.Size(1161, 740);
             this.Load += new System.EventHandler(this.instructors_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgInstructors)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -349,5 +382,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Grades_Handled;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
         private System.Windows.Forms.DataGridViewImageColumn Delete;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

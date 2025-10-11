@@ -15,7 +15,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Publish\CTFCA\</PublishUrl>
+    <TargetFrameworkProfile />
+    <PublishUrl>C:\Users\GAIJIN\Desktop\CTF Desktop\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,11 +26,12 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -64,6 +66,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>CTFCA RE.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>207F28DAD6D0BC15BCDC795E1040554CB042061A</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>CTFCA_ADMIN_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
@@ -298,6 +306,12 @@
     <Compile Include="SHSGradeEntryForm.Designer.cs">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StudentDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StudentDetailsForm.Designer.cs">
+      <DependentUpon>StudentDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Students.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -393,6 +407,9 @@
     <EmbeddedResource Include="SHSGradeEntryForm.resx">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StudentDetailsForm.resx">
+      <DependentUpon>StudentDetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Students.resx">
       <DependentUpon>Students.cs</DependentUpon>
     </EmbeddedResource>
@@ -405,6 +422,7 @@
     <EmbeddedResource Include="VerifyCodeForm.resx">
       <DependentUpon>VerifyCodeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="CTFCA_ADMIN_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -474,6 +492,13 @@
     <Content Include="CTFCA %283%29.ico" />
     <Content Include="CTFCA RE.ico" />
     <Content Include="CTFCA_ICON.ico" />
+    <None Include="Resources\no-image1.png" />
+    <Content Include="Resources\payment.png" />
+    <None Include="Resources\payment1.png" />
+    <None Include="Resources\x.png" />
+    <None Include="Resources\-.png" />
+    <None Include="Resources\maximize.png" />
+    <None Include="Resources\minimize.png" />
     <Content Include="Resources\no-image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
