@@ -35,6 +35,9 @@ namespace CFCA_ADMIN
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Junior_High_School));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dtgEnrollees = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            this.cbStatusFilter = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.colStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLevelApplied = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,9 +47,6 @@ namespace CFCA_ADMIN
             this.colSubmittedAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnConfirm = new System.Windows.Forms.DataGridViewImageColumn();
             this.btnDelete = new System.Windows.Forms.DataGridViewImageColumn();
-            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            this.cbStatusFilter = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dtgEnrollees)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -132,6 +132,55 @@ namespace CFCA_ADMIN
             this.dtgEnrollees.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             this.dtgEnrollees.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DtgEnrollees_CellContentClick);
             // 
+            // tbSearch
+            // 
+            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSearch.BorderRadius = 17;
+            this.tbSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbSearch.DefaultText = "";
+            this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbSearch.Location = new System.Drawing.Point(981, 46);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.PlaceholderText = "Search";
+            this.tbSearch.SelectedText = "";
+            this.tbSearch.Size = new System.Drawing.Size(219, 36);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.TextChanged += new System.EventHandler(this.TbSearch_TextChanged);
+            // 
+            // cbStatusFilter
+            // 
+            this.cbStatusFilter.AutoRoundedCorners = true;
+            this.cbStatusFilter.BackColor = System.Drawing.Color.Transparent;
+            this.cbStatusFilter.BorderRadius = 17;
+            this.cbStatusFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbStatusFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatusFilter.FocusedColor = System.Drawing.Color.Empty;
+            this.cbStatusFilter.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbStatusFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cbStatusFilter.ItemHeight = 30;
+            this.cbStatusFilter.Items.AddRange(new object[] {
+            "Pending",
+            "Confirmed",
+            "Rejected",
+            "All"});
+            this.cbStatusFilter.Location = new System.Drawing.Point(9, 46);
+            this.cbStatusFilter.Name = "cbStatusFilter";
+            this.cbStatusFilter.Size = new System.Drawing.Size(152, 36);
+            this.cbStatusFilter.TabIndex = 0;
+            this.cbStatusFilter.SelectedIndexChanged += new System.EventHandler(this.CbStatusFilter_SelectedIndexChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.tbSearch);
+            this.panel1.Controls.Add(this.cbStatusFilter);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1275, 100);
+            this.panel1.TabIndex = 2;
+            // 
             // colStudentNumber
             // 
             this.colStudentNumber.HeaderText = "Student No.";
@@ -189,7 +238,7 @@ namespace CFCA_ADMIN
             dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(10);
             this.btnConfirm.DefaultCellStyle = dataGridViewCellStyle3;
             this.btnConfirm.FillWeight = 40F;
-            this.btnConfirm.HeaderText = "";
+            this.btnConfirm.HeaderText = "Accept";
             this.btnConfirm.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
             this.btnConfirm.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.btnConfirm.MinimumWidth = 6;
@@ -204,62 +253,13 @@ namespace CFCA_ADMIN
             dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(10);
             this.btnDelete.DefaultCellStyle = dataGridViewCellStyle4;
             this.btnDelete.FillWeight = 40F;
-            this.btnDelete.HeaderText = "";
+            this.btnDelete.HeaderText = "Decline";
             this.btnDelete.Image = global::CFCA_ADMIN.Properties.Resources.delete_square;
             this.btnDelete.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.btnDelete.MinimumWidth = 6;
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.ReadOnly = true;
             this.btnDelete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // tbSearch
-            // 
-            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearch.BorderRadius = 17;
-            this.tbSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbSearch.DefaultText = "";
-            this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tbSearch.Location = new System.Drawing.Point(981, 46);
-            this.tbSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.PlaceholderText = "Search";
-            this.tbSearch.SelectedText = "";
-            this.tbSearch.Size = new System.Drawing.Size(219, 36);
-            this.tbSearch.TabIndex = 1;
-            this.tbSearch.TextChanged += new System.EventHandler(this.TbSearch_TextChanged);
-            // 
-            // cbStatusFilter
-            // 
-            this.cbStatusFilter.AutoRoundedCorners = true;
-            this.cbStatusFilter.BackColor = System.Drawing.Color.Transparent;
-            this.cbStatusFilter.BorderRadius = 17;
-            this.cbStatusFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbStatusFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStatusFilter.FocusedColor = System.Drawing.Color.Empty;
-            this.cbStatusFilter.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbStatusFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cbStatusFilter.ItemHeight = 30;
-            this.cbStatusFilter.Items.AddRange(new object[] {
-            "Pending",
-            "Confirmed",
-            "Rejected",
-            "All"});
-            this.cbStatusFilter.Location = new System.Drawing.Point(9, 46);
-            this.cbStatusFilter.Name = "cbStatusFilter";
-            this.cbStatusFilter.Size = new System.Drawing.Size(152, 36);
-            this.cbStatusFilter.TabIndex = 0;
-            this.cbStatusFilter.SelectedIndexChanged += new System.EventHandler(this.CbStatusFilter_SelectedIndexChanged);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.Controls.Add(this.tbSearch);
-            this.panel1.Controls.Add(this.cbStatusFilter);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1275, 100);
-            this.panel1.TabIndex = 2;
             // 
             // Junior_High_School
             // 
@@ -280,15 +280,15 @@ namespace CFCA_ADMIN
         private Guna.UI2.WinForms.Guna2DataGridView dtgEnrollees;
         private Guna.UI2.WinForms.Guna2TextBox tbSearch;
         private Guna.UI2.WinForms.Guna2ComboBox cbStatusFilter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colStudentNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLevelApplied;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGender;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAge;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colContact;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSubmittedAt;
-        private System.Windows.Forms.DataGridViewImageColumn btnConfirm;
-        private System.Windows.Forms.DataGridViewImageColumn btnDelete;
         private Panel panel1;
+        private DataGridViewTextBoxColumn colStudentNumber;
+        private DataGridViewTextBoxColumn colName;
+        private DataGridViewTextBoxColumn colLevelApplied;
+        private DataGridViewTextBoxColumn colGender;
+        private DataGridViewTextBoxColumn colAge;
+        private DataGridViewTextBoxColumn colContact;
+        private DataGridViewTextBoxColumn colSubmittedAt;
+        private DataGridViewImageColumn btnConfirm;
+        private DataGridViewImageColumn btnDelete;
     }
 }

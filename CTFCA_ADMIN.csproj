@@ -213,6 +213,12 @@
     <Compile Include="EnrollmentControl.Designer.cs">
       <DependentUpon>EnrollmentControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="EnrollmentViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnrollmentViewer.Designer.cs">
+      <DependentUpon>EnrollmentViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForgotPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,12 +312,6 @@
     <Compile Include="SHSGradeEntryForm.Designer.cs">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StudentDetailsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StudentDetailsForm.Designer.cs">
-      <DependentUpon>StudentDetailsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Students.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -356,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EnrollmentControl.resx">
       <DependentUpon>EnrollmentControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnrollmentViewer.resx">
+      <DependentUpon>EnrollmentViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ForgotPassword.resx">
       <DependentUpon>ForgotPassword.cs</DependentUpon>
@@ -406,9 +409,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SHSGradeEntryForm.resx">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StudentDetailsForm.resx">
-      <DependentUpon>StudentDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Students.resx">
       <DependentUpon>Students.cs</DependentUpon>
