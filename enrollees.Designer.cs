@@ -36,18 +36,19 @@ namespace CFCA_ADMIN
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Enrollees));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dtgEnrollees = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.cbStatusFilter = new Guna.UI2.WinForms.Guna2ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pbStudentPhoto = new System.Windows.Forms.PictureBox();
             this.colStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLevelApplied = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,8 +57,13 @@ namespace CFCA_ADMIN
             this.colContact = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSubmittedAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.pbStudentPhoto = new System.Windows.Forms.PictureBox();
             this.btnConfirm = new System.Windows.Forms.DataGridViewImageColumn();
             this.btnDelete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.tbSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dtgEnrollees)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbStudentPhoto)).BeginInit();
@@ -145,29 +151,6 @@ namespace CFCA_ADMIN
             this.dtgEnrollees.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             this.dtgEnrollees.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DtgEnrollees_CellContentClick);
             // 
-            // tbSearch
-            // 
-            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearch.BorderRadius = 17;
-            this.tbSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbSearch.DefaultText = "";
-            this.tbSearch.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.tbSearch.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.tbSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.tbSearch.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.tbSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tbSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.tbSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("tbSearch.IconLeft")));
-            this.tbSearch.Location = new System.Drawing.Point(1031, 41);
-            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.PlaceholderText = "Search";
-            this.tbSearch.SelectedText = "";
-            this.tbSearch.Size = new System.Drawing.Size(240, 44);
-            this.tbSearch.TabIndex = 1;
-            this.tbSearch.TextChanged += new System.EventHandler(this.TbSearch_TextChanged);
-            // 
             // cbStatusFilter
             // 
             this.cbStatusFilter.AutoRoundedCorners = true;
@@ -203,14 +186,6 @@ namespace CFCA_ADMIN
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1275, 100);
             this.panel1.TabIndex = 3;
-            // 
-            // pbStudentPhoto
-            // 
-            this.pbStudentPhoto.Location = new System.Drawing.Point(0, 0);
-            this.pbStudentPhoto.Name = "pbStudentPhoto";
-            this.pbStudentPhoto.Size = new System.Drawing.Size(100, 50);
-            this.pbStudentPhoto.TabIndex = 0;
-            this.pbStudentPhoto.TabStop = false;
             // 
             // colStudentNumber
             // 
@@ -276,6 +251,45 @@ namespace CFCA_ADMIN
             this.colEmail.Name = "colEmail";
             this.colEmail.ReadOnly = true;
             // 
+            // dataGridViewImageColumn1
+            // 
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle7.NullValue")));
+            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(10);
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle7;
+            this.dataGridViewImageColumn1.FillWeight = 40F;
+            this.dataGridViewImageColumn1.HeaderText = "Accept";
+            this.dataGridViewImageColumn1.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
+            this.dataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.dataGridViewImageColumn1.MinimumWidth = 6;
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewImageColumn1.Width = 58;
+            // 
+            // dataGridViewImageColumn2
+            // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle8.NullValue")));
+            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(10);
+            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dataGridViewImageColumn2.FillWeight = 40F;
+            this.dataGridViewImageColumn2.HeaderText = "Decline";
+            this.dataGridViewImageColumn2.Image = global::CFCA_ADMIN.Properties.Resources.delete_square;
+            this.dataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.dataGridViewImageColumn2.MinimumWidth = 6;
+            this.dataGridViewImageColumn2.Name = "dataGridViewImageColumn2";
+            this.dataGridViewImageColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewImageColumn2.Width = 58;
+            // 
+            // pbStudentPhoto
+            // 
+            this.pbStudentPhoto.Location = new System.Drawing.Point(0, 0);
+            this.pbStudentPhoto.Name = "pbStudentPhoto";
+            this.pbStudentPhoto.Size = new System.Drawing.Size(100, 50);
+            this.pbStudentPhoto.TabIndex = 0;
+            this.pbStudentPhoto.TabStop = false;
+            // 
             // btnConfirm
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -306,6 +320,29 @@ namespace CFCA_ADMIN
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.ReadOnly = true;
             this.btnDelete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSearch.BorderRadius = 17;
+            this.tbSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbSearch.DefaultText = "";
+            this.tbSearch.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.tbSearch.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.tbSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.tbSearch.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.tbSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.tbSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("tbSearch.IconLeft")));
+            this.tbSearch.Location = new System.Drawing.Point(1031, 41);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.PlaceholderText = "Search";
+            this.tbSearch.SelectedText = "";
+            this.tbSearch.Size = new System.Drawing.Size(240, 44);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.TextChanged += new System.EventHandler(this.TbSearch_TextChanged);
             // 
             // Enrollees
             // 
@@ -342,5 +379,8 @@ namespace CFCA_ADMIN
         private DataGridViewTextBoxColumn colEmail;
         private DataGridViewImageColumn btnConfirm;
         private DataGridViewImageColumn btnDelete;
+        private DataGridViewImageColumn dataGridViewImageColumn1;
+        private DataGridViewImageColumn dataGridViewImageColumn2;
+        private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
     }
 }
