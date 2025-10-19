@@ -145,5 +145,10 @@ namespace CFCA_ADMIN
                 }
             }
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

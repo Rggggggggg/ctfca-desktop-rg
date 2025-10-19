@@ -25,7 +25,21 @@ namespace CFCA_ADMIN
             _displayName = displayName;
             _imageData = imageData;
             this.role = role;
+            this.MaximizeBox = true;
+            this.MinimizeBox = true;
+            this.ControlBox = true;
+            this.FormBorderStyle = FormBorderStyle.Sizable;
         }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.CenterToScreen();
+            }
+        }
+
 
         private void LoadControl(System.Windows.Forms.UserControl uc)
         {
@@ -38,6 +52,15 @@ namespace CFCA_ADMIN
         {
             lblAdmin.Text = "Student Grades"; // Update the header label
             LoadControl(new Gradingform(studentID, name, gradeLevel, strand));
+        }
+        public void LoadBasicDetails(string studentNumber)
+        {
+            LoadControl(new StudentDetailsFormBasic(studentNumber));
+        }
+
+        public void LoadJHSDetails(string studentNumber)
+        {
+            LoadControl(new StudentDetailsFormJHS(studentNumber));
         }
 
         // New method to load EnrollmentControl
@@ -145,6 +168,15 @@ namespace CFCA_ADMIN
         {
             lblName.Text = _displayName;
             lblRole.Text = role;
+
+            // Simple fix - just make the label bigger
+            lblName.AutoSize = false;
+            lblName.Size = new Size(200, 60); // Wider and taller
+
+            // Optional: Add tooltip for very long names
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(lblName, _displayName);
+
             if (_imageData != null && _imageData.Length > 0)
             {
                 using (MemoryStream ms = new MemoryStream(_imageData))
@@ -158,7 +190,7 @@ namespace CFCA_ADMIN
             btnBasicEd.Click += SubMenuButton_Click;
             btnJHS.Click += SubMenuButton_Click;
             btnSHS.Click += SubMenuButton_Click;
-            btnDashboard.PerformClick(); // Load dashboard by default
+            btnDashboard.PerformClick();
         }
 
         private void SubMenuButton_Click(object sender, EventArgs e)
@@ -294,6 +326,41 @@ namespace CFCA_ADMIN
         private void guna2Button2_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void guna2Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblAdmin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Add this method to Form2
+        public void RefreshUserInfo(string displayName, byte[] imageData, string role)
+        {
+            _displayName = displayName;
+            _imageData = imageData;
+            this.role = role;
+
+            // Update the UI
+            lblName.Text = displayName;
+            lblRole.Text = role;
+
+            if (imageData != null && imageData.Length > 0)
+            {
+                using (MemoryStream ms = new MemoryStream(imageData))
+                {
+                    pic.Image = Image.FromStream(ms);
+                }
+            }
         }
     }
 }

@@ -178,7 +178,8 @@ namespace CFCA_ADMIN
             }
             else if (columnName == "btnViewInfo")
             {
-                ViewEnrollmentDetails(studentNumber);
+                Form2 parentForm = this.ParentForm as Form2;
+                parentForm?.LoadJHSDetails(studentNumber);
             }
             else if (columnName == "colPhoto")
             {
@@ -810,7 +811,14 @@ namespace CFCA_ADMIN
             parent.Controls.Add(separator);
         }
 
-        private void TbSearch_TextChanged(object sender, EventArgs e)
+        private void CbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbSearch.Clear();
+            string selectedStatus = cbStatusFilter.SelectedItem?.ToString() ?? "Pending";
+            LoadStudentData(selectedStatus);
+        }
+
+        private void tbSearch_TextChanged_1(object sender, EventArgs e)
         {
             string filterText = tbSearch.Text.ToLower();
 
@@ -825,13 +833,6 @@ namespace CFCA_ADMIN
                 bool visible = studentNumber.Contains(filterText) || fullName.Contains(filterText) || levelApplied.Contains(filterText);
                 row.Visible = visible;
             }
-        }
-
-        private void CbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            tbSearch.Clear();
-            string selectedStatus = cbStatusFilter.SelectedItem?.ToString() ?? "Pending";
-            LoadStudentData(selectedStatus);
         }
     }
 }

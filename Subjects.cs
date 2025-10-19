@@ -58,7 +58,50 @@ namespace CFCA_ADMIN
 
         private bool _suppressSearchEvent = false;
 
-        private void cbGradeLevel_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void dtgSubjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void EditSubject()
+        {
+
+        }
+
+        private void DeleteSubject()
+        {
+
+        }
+
+        private void tbSearch_TextChanged_1(object sender, EventArgs e)
+        {
+            if (_suppressSearchEvent) return; // Skip if triggered by grade level change
+
+            cbGradeLevel.SelectedIndex = 0; // Force "All" when searching
+            string search = tbSearch.Text.ToLower();
+
+            foreach (DataGridViewRow row in dtgSubjects.Rows)
+            {
+                bool visible = row.Cells["subject_name"].Value.ToString().ToLower().Contains(search) ||
+                               row.Cells["grade_level"].Value.ToString().ToLower().Contains(search);
+
+                row.Visible = visible;
+            }
+        }
+
+        private void btnAddSubject_Click_1(object sender, EventArgs e)
+        {
+            Form parentform = this.FindForm();
+            OverlayForm overlay = new OverlayForm(parentform);
+            overlay.Show();
+            add_Subject addSubject = new add_Subject();
+            addSubject.ShowDialog();
+            overlay.Dispose();
+            subjects();
+        }
+
+        private void cbGradeLevel_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             string selectedGrade = cbGradeLevel.SelectedItem?.ToString();
 
@@ -79,48 +122,6 @@ namespace CFCA_ADMIN
                     row.Visible = gradelevel == selectedGrade;
                 }
             }
-        }
-
-        private void tbSearch_TextChanged(object sender, EventArgs e)
-        {
-            if (_suppressSearchEvent) return; // Skip if triggered by grade level change
-
-            cbGradeLevel.SelectedIndex = 0; // Force "All" when searching
-            string search = tbSearch.Text.ToLower();
-
-            foreach (DataGridViewRow row in dtgSubjects.Rows)
-            {
-                bool visible = row.Cells["subject_name"].Value.ToString().ToLower().Contains(search) ||
-                               row.Cells["grade_level"].Value.ToString().ToLower().Contains(search);
-
-                row.Visible = visible;
-            }
-        }
-
-        private void btnAddSubject_Click(object sender, EventArgs e)
-        {
-            Form parentform = this.FindForm();
-            OverlayForm overlay = new OverlayForm(parentform);
-            overlay.Show();
-            add_Subject addSubject = new add_Subject();
-            addSubject.ShowDialog();
-            overlay.Dispose();
-            subjects();
-        }
-
-        private void dtgSubjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void EditSubject()
-        {
-
-        }
-
-        private void DeleteSubject()
-        {
-
         }
     }
 }

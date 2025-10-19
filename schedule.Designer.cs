@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(schedule));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -51,10 +52,8 @@
             this.Room = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dtgSchedule)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbSearch
@@ -71,12 +70,12 @@
             this.tbSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tbSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.tbSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("tbSearch.IconLeft")));
-            this.tbSearch.Location = new System.Drawing.Point(953, 35);
-            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbSearch.Location = new System.Drawing.Point(704, 43);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.PlaceholderText = "Search";
             this.tbSearch.SelectedText = "";
-            this.tbSearch.Size = new System.Drawing.Size(204, 44);
+            this.tbSearch.Size = new System.Drawing.Size(153, 36);
             this.tbSearch.TabIndex = 7;
             this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
@@ -93,10 +92,9 @@
             this.btnNew.ForeColor = System.Drawing.Color.White;
             this.btnNew.Image = ((System.Drawing.Image)(resources.GetObject("btnNew.Image")));
             this.btnNew.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnNew.Location = new System.Drawing.Point(839, 39);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnNew.Location = new System.Drawing.Point(618, 47);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(107, 41);
+            this.btnNew.Size = new System.Drawing.Size(80, 33);
             this.btnNew.TabIndex = 6;
             this.btnNew.Text = "New";
             this.btnNew.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -110,7 +108,9 @@
             this.dtgSchedule.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dtgSchedule.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dtgSchedule.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dtgSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dtgSchedule.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
@@ -142,11 +142,9 @@
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dtgSchedule.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dtgSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtgSchedule.EnableHeadersVisualStyles = true;
             this.dtgSchedule.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dtgSchedule.Location = new System.Drawing.Point(0, 100);
-            this.dtgSchedule.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtgSchedule.Location = new System.Drawing.Point(12, 86);
             this.dtgSchedule.Name = "dtgSchedule";
             this.dtgSchedule.ReadOnly = true;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -160,7 +158,7 @@
             this.dtgSchedule.RowHeadersVisible = false;
             this.dtgSchedule.RowHeadersWidth = 51;
             this.dtgSchedule.RowTemplate.Height = 70;
-            this.dtgSchedule.Size = new System.Drawing.Size(1161, 567);
+            this.dtgSchedule.Size = new System.Drawing.Size(845, 433);
             this.dtgSchedule.TabIndex = 8;
             this.dtgSchedule.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dtgSchedule.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -260,6 +258,7 @@
             // 
             // Edit
             // 
+            this.Edit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle4.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle4.NullValue")));
             dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(8);
@@ -271,9 +270,11 @@
             this.Edit.MinimumWidth = 6;
             this.Edit.Name = "Edit";
             this.Edit.ReadOnly = true;
+            this.Edit.Width = 45;
             // 
             // Delete
             // 
+            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle5.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle5.NullValue")));
             dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(8);
@@ -285,40 +286,24 @@
             this.Delete.MinimumWidth = 6;
             this.Delete.Name = "Delete";
             this.Delete.ReadOnly = true;
+            this.Delete.Width = 45;
             // 
-            // panel1
+            // guna2Elipse1
             // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.Controls.Add(this.tbSearch);
-            this.panel1.Controls.Add(this.btnNew);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1161, 100);
-            this.panel1.TabIndex = 9;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 667);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1161, 73);
-            this.panel2.TabIndex = 10;
+            this.guna2Elipse1.BorderRadius = 20;
+            this.guna2Elipse1.TargetControl = this.dtgSchedule;
             // 
             // schedule
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tbSearch);
+            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.dtgSchedule);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "schedule";
-            this.Size = new System.Drawing.Size(1161, 740);
+            this.Size = new System.Drawing.Size(871, 601);
             this.Load += new System.EventHandler(this.schedule_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgSchedule)).EndInit();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -340,7 +325,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Room;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
         private System.Windows.Forms.DataGridViewImageColumn Delete;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
     }
 }

@@ -201,6 +201,12 @@
     <Compile Include="asdas.Designer.cs">
       <DependentUpon>asdas.cs</DependentUpon>
     </Compile>
+    <Compile Include="dashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="dashboard.Designer.cs">
+      <DependentUpon>dashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditStudent.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,12 +230,6 @@
     </Compile>
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="dashboard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="dashboard.Designer.cs">
-      <DependentUpon>dashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="Database.cs" />
     <Compile Include="enrollees.cs">
@@ -306,6 +306,18 @@
     <Compile Include="SHSGradeEntryForm.Designer.cs">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StudentDetailsFormBasic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StudentDetailsFormBasic.Designer.cs">
+      <DependentUpon>StudentDetailsFormBasic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StudentDetailsFormJHS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StudentDetailsFormJHS.Designer.cs">
+      <DependentUpon>StudentDetailsFormJHS.cs</DependentUpon>
+    </Compile>
     <Compile Include="StudentDetailsFormSHS.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -357,6 +369,9 @@
     <EmbeddedResource Include="asdas.resx">
       <DependentUpon>asdas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dashboard.resx">
+      <DependentUpon>dashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditStudent.resx">
       <DependentUpon>EditStudent.cs</DependentUpon>
     </EmbeddedResource>
@@ -368,9 +383,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dashboard.resx">
-      <DependentUpon>dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="enrollees.resx">
       <DependentUpon>enrollees.cs</DependentUpon>
@@ -412,6 +424,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SHSGradeEntryForm.resx">
       <DependentUpon>SHSGradeEntryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StudentDetailsFormBasic.resx">
+      <DependentUpon>StudentDetailsFormBasic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StudentDetailsFormJHS.resx">
+      <DependentUpon>StudentDetailsFormJHS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StudentDetailsFormSHS.resx">
       <DependentUpon>StudentDetailsFormSHS.cs</DependentUpon>
@@ -501,6 +519,7 @@
     <Content Include="CTFCA %283%29.ico" />
     <Content Include="CTFCA RE.ico" />
     <Content Include="CTFCA_ICON.ico" />
+    <None Include="Resources\wallet.png" />
     <None Include="Resources\no-image1.png" />
     <Content Include="Resources\payment.png" />
     <None Include="Resources\payment1.png" />

@@ -42,7 +42,6 @@ namespace CFCA_ADMIN
             }
         }
 
-
         private void dashboard_Load(object sender, EventArgs e)
         {
             chartpanel.Controls.Add(cartesianChart);
@@ -63,7 +62,6 @@ namespace CFCA_ADMIN
             CenterLabel(lblStudentsToday, panelStudents);
             CenterLabel(lblInstructorsToday, panelInstructors);
 
-           
         }
 
         // Replace the CenterLabel method to accept Control instead of Label
@@ -196,36 +194,6 @@ namespace CFCA_ADMIN
             pieChartControl.LegendLocation = LegendLocation.Right;
         }
 
-        private void btnInstructor_Click(object sender, EventArgs e)
-        {
-            Form parentform = this.FindForm();
-            OverlayForm overlay = new OverlayForm(parentform);
-            overlay.Show();
-            add_instructor AddInstructor = new add_instructor();
-            AddInstructor.ShowDialog();
-            overlay.Dispose();
-        }
-
-        private void btnSched_Click(object sender, EventArgs e)
-        {
-            Form parentform = this.FindForm();
-            OverlayForm overlay = new OverlayForm(parentform);
-            overlay.Show();
-            add_Schedule AddScheds = new add_Schedule(null);
-            AddScheds.ShowDialog();
-            overlay.Dispose();
-        }
-
-        private void btnSubs_Click(object sender, EventArgs e)
-        {
-            Form parentform = this.FindForm();
-            OverlayForm overlay = new OverlayForm(parentform);
-            overlay.Show();
-            add_Subject AddScheds = new add_Subject();
-            AddScheds.ShowDialog();
-            overlay.Dispose();
-        }
-
         public int TotalEnrollments()
         {
             const string query = @"SELECT 
@@ -256,7 +224,7 @@ namespace CFCA_ADMIN
             }
         }
 
-       public int TotalStudents()
+        public int TotalStudents()
         {
             using (var conn = Database.GetConnection())
             {
@@ -309,6 +277,46 @@ namespace CFCA_ADMIN
                     return Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
+        }
+
+        private void guna2Panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void guna2Panel10_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnInstructor_Click_1(object sender, EventArgs e)
+        {
+            Form parentform = this.FindForm();
+            OverlayForm overlay = new OverlayForm(parentform);
+            overlay.Show();
+            add_instructor AddInstructor = new add_instructor();
+            AddInstructor.ShowDialog();
+            overlay.Dispose();
+        }
+
+        private void btnSched_Click_1(object sender, EventArgs e)
+        {
+            Form parentform = this.FindForm();
+            OverlayForm overlay = new OverlayForm(parentform);
+            overlay.Show();
+            add_Schedule AddScheds = new add_Schedule(null);
+            AddScheds.ShowDialog();
+            overlay.Dispose();
+        }
+
+        private void btnSubs_Click_1(object sender, EventArgs e)
+        {
+            Form parentform = this.FindForm();
+            OverlayForm overlay = new OverlayForm(parentform);
+            overlay.Show();
+            add_Subject AddScheds = new add_Subject();
+            AddScheds.ShowDialog();
+            overlay.Dispose();
         }
     }
 }

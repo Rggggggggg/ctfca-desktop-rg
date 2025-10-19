@@ -463,20 +463,22 @@ namespace CFCA_ADMIN
 
         private void ShowStudentDetails(DataRow studentData)
         {
-            // Get the parent container (assuming it's in a Panel or similar container)
             Control parentContainer = this.Parent;
             if (parentContainer == null) return;
 
-            // Create the student details UserControl
             StudentDetailsFormSHS studentDetails = new StudentDetailsFormSHS();
 
-            // Set up back button event (you'll need to add this to StudentDetailsFormSHS)
+            // ✅ Set the StudentNumber property
+            studentDetails.StudentNumber = studentData["student_number"].ToString();
+
             studentDetails.BackButtonClicked += (s, e) => ShowSeniorHighSchoolControl();
 
-            // Hide current control and show student details
             this.Hide();
             studentDetails.Dock = DockStyle.Fill;
             parentContainer.Controls.Add(studentDetails);
+
+            // ✅ Manually call ShowStudentInfo after setting the property
+            studentDetails.Show(); // Ensure it's visible
         }
 
         // Method to show the Senior High School control again
@@ -497,7 +499,7 @@ namespace CFCA_ADMIN
             LoadStudentData(cbStatusFilter.Text);
         }
 
-        private void tbSearch_TextChanged(object sender, EventArgs e)
+        private void tbSearch_TextChanged_1(object sender, EventArgs e)
         {
             string filtertext = tbSearch.Text.ToLower();
 
@@ -513,7 +515,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void cbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbStatusFilter_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             tbSearch.Clear();
             string selectedStatus = cbStatusFilter.SelectedItem?.ToString() ?? "Pending";

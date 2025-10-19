@@ -17,6 +17,10 @@ namespace CFCA_ADMIN
         // Fixed dimensions for student photos
         private const int PHOTO_WIDTH = 60;
         private const int PHOTO_HEIGHT = 60;
+        private int currentPage = 1;
+        private int pageSize = 10; // number of students per page
+        private int totalRecords = 0;
+        private int totalPages = 0;
 
         public Students()
         {
@@ -53,51 +57,55 @@ namespace CFCA_ADMIN
                 try
                 {
                     conn.Open();
+
+                    // Count total records first
+                    string countQuery = @"SELECT COUNT(*) FROM students WHERE 1=1";
+                    if (gradeFilter != "All") countQuery += " AND COALESCE(level_applied, grade_level) = @gradeFilter";
+                    if (!string.IsNullOrWhiteSpace(searchKeyword)) countQuery += " AND (surname LIKE @search OR first_name LIKE @search OR middle_name LIKE @search)";
+
+                    using (MySqlCommand countCmd = new MySqlCommand(countQuery, conn))
+                    {
+                        if (gradeFilter != "All") countCmd.Parameters.AddWithValue("@gradeFilter", gradeFilter);
+                        if (!string.IsNullOrWhiteSpace(searchKeyword)) countCmd.Parameters.AddWithValue("@search", "%" + searchKeyword + "%");
+                        totalRecords = Convert.ToInt32(countCmd.ExecuteScalar());
+                    }
+
+                    totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+                    int offset = (currentPage - 1) * pageSize;
+
+                    // Actual data query
                     string query = @"SELECT 
-                        COALESCE(student_number, lrn, application_no) AS id,
-                        COALESCE(level_applied, grade_level) AS level_applied,
-                        COALESCE(contact, cellphone, telephone) AS contact,
-                        CONCAT(surname, ' ', first_name, ' ', middle_name) AS name,
-                        gender, age, strand,
-                        COALESCE(payment_status, 'Not Paid') AS payment_status,
-                        student_photo,
-                        id_photo_filename
-                    FROM students
-                    WHERE 1=1";
+                COALESCE(student_number, lrn, application_no) AS id,
+                COALESCE(level_applied, grade_level) AS level_applied,
+                COALESCE(contact, cellphone, telephone) AS contact,
+                CONCAT(surname, ' ', first_name, ' ', middle_name) AS name,
+                gender, age, strand,
+                COALESCE(payment_status, 'Not Paid') AS payment_status,
+                student_photo,
+                id_photo_filename
+            FROM students
+            WHERE 1=1";
 
-                    // Grade Level filter
-                    if (gradeFilter != "All")
-                    {
-                        query += " AND COALESCE(level_applied, grade_level) = @gradeFilter";
-                    }
-
-                    // Search filter
-                    if (!string.IsNullOrWhiteSpace(searchKeyword))
-                    {
-                        query += " AND (surname LIKE @search OR first_name LIKE @search OR middle_name LIKE @search)";
-                    }
+                    if (gradeFilter != "All") query += " AND COALESCE(level_applied, grade_level) = @gradeFilter";
+                    if (!string.IsNullOrWhiteSpace(searchKeyword)) query += " AND (surname LIKE @search OR first_name LIKE @search OR middle_name LIKE @search)";
+                    query += " LIMIT @pageSize OFFSET @offset";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        if (gradeFilter != "All")
-                        {
-                            cmd.Parameters.AddWithValue("@gradeFilter", gradeFilter);
-                        }
-                        if (!string.IsNullOrWhiteSpace(searchKeyword))
-                        {
-                            cmd.Parameters.AddWithValue("@search", "%" + searchKeyword + "%");
-                        }
+                        if (gradeFilter != "All") cmd.Parameters.AddWithValue("@gradeFilter", gradeFilter);
+                        if (!string.IsNullOrWhiteSpace(searchKeyword)) cmd.Parameters.AddWithValue("@search", "%" + searchKeyword + "%");
+                        cmd.Parameters.AddWithValue("@pageSize", pageSize);
+                        cmd.Parameters.AddWithValue("@offset", offset);
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             dtgStudents.Rows.Clear();
                             while (reader.Read())
                             {
-                                // Load student photo with fixed size
                                 Image studentPhoto = LoadStudentPhoto(reader);
 
                                 dtgStudents.Rows.Add(
-                                    studentPhoto,  // Photo column (first column)
+                                    studentPhoto,
                                     reader["id"].ToString(),
                                     reader["name"].ToString(),
                                     reader["level_applied"].ToString(),
@@ -110,6 +118,8 @@ namespace CFCA_ADMIN
                             }
                         }
                     }
+
+                    UpdatePaginationLabel();
                 }
                 catch (Exception ex)
                 {
@@ -331,36 +341,9 @@ namespace CFCA_ADMIN
             photoViewer.ShowDialog();
         }
 
-        private void tbSearch_TextChanged(object sender, EventArgs e)
-        {
-            string selectedGrade = cbGradeLevel.SelectedItem?.ToString() ?? "All";
-            string searchKeyword = tbSearch.Text.Trim();
-
-            if (selectedGrade != "All")
-            {
-                // Use SQL filter for specific grade
-                LoadStudentData(selectedGrade, searchKeyword);
-            }
-            else
-            {
-                // Just filter existing rows in DataGridView
-                string search = searchKeyword.ToLower();
-
-                foreach (DataGridViewRow row in dtgStudents.Rows)
-                {
-                    bool visible =
-                        row.Cells["Grades"].Value.ToString().ToLower().Contains(search) ||
-                        row.Cells["strand"].Value.ToString().ToLower().Contains(search) ||
-                        row.Cells["name"].Value.ToString().ToLower().Contains(search) ||
-                        row.Cells["payment_status"].Value.ToString().ToLower().Contains(search);
-
-                    row.Visible = visible;
-                }
-            }
-        }
-
         // Declare an event
         public event Action<string, string> GradesRequested;
+
         private void dtgStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -395,6 +378,158 @@ namespace CFCA_ADMIN
             {
                 UpdatePaymentStatus(studentID, name);
             }
+            else if (columnName == "view_info") // ✅ NEW: Handle View Info button
+            {
+                ViewStudentDetails(studentID, gradeLevel);
+            }
+        }
+
+        // ✅ NEW METHOD: Determine student type and show appropriate detail form
+        private void ViewStudentDetails(string studentID, string gradeLevel)
+        {
+            if (string.IsNullOrEmpty(studentID))
+            {
+                MessageBox.Show("Invalid student record.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Determine student type based on grade level
+            string studentType = GetStudentType(studentID, gradeLevel);
+
+            if (string.IsNullOrEmpty(studentType))
+            {
+                MessageBox.Show("Could not determine student type.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Control parentContainer = this.Parent;
+            if (parentContainer == null) return;
+
+            UserControl detailsForm = null;
+
+            // Create the appropriate detail form based on student type
+            switch (studentType)
+            {
+                case "Basic Ed":
+                    detailsForm = new StudentDetailsFormBasic(studentID);
+                    if (detailsForm is StudentDetailsFormBasic basicForm)
+                    {
+                        basicForm.BackButtonClicked += (s, ev) => ShowStudentsForm();
+                    }
+                    break;
+
+                case "Junior High":
+                    detailsForm = new StudentDetailsFormJHS(studentID);
+                    break;
+
+                case "Senior High":
+                    detailsForm = new StudentDetailsFormSHS();
+                    ((StudentDetailsFormSHS)detailsForm).StudentNumber = studentID;
+                    ((StudentDetailsFormSHS)detailsForm).BackButtonClicked += (s, ev) => ShowStudentsForm();
+                    break;
+
+                default:
+                    MessageBox.Show("Unknown student type.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+            }
+
+            // Hide current Students form
+            this.Hide();
+
+            // Show the detail form
+            detailsForm.Dock = DockStyle.Fill;
+            parentContainer.Controls.Add(detailsForm);
+            detailsForm.BringToFront();
+        }
+
+        // ✅ NEW METHOD: Determine which table the student belongs to
+        private string GetStudentType(string studentID, string gradeLevel)
+        {
+            // First, try to determine by grade level
+            if (!string.IsNullOrEmpty(gradeLevel))
+            {
+                if (gradeLevel.Contains("Nursery") || gradeLevel.Contains("Kinder 1") ||
+                    gradeLevel.Contains("Kinder 2") || gradeLevel.Contains("Grade 1") ||
+                    gradeLevel.Contains("Grade 2") || gradeLevel.Contains("Grade 3") ||
+                    gradeLevel.Contains("Grade 4") || gradeLevel.Contains("Grade 5") ||
+                    gradeLevel.Contains("Grade 6"))
+                {
+                    return "Basic Ed";
+                }
+                else if (gradeLevel.Contains("Grade 7") || gradeLevel.Contains("Grade 8") ||
+                         gradeLevel.Contains("Grade 9") || gradeLevel.Contains("Grade 10"))
+                {
+                    return "Junior High";
+                }
+                else if (gradeLevel.Contains("Grade 11") || gradeLevel.Contains("Grade 12"))
+                {
+                    return "Senior High";
+                }
+            }
+
+            // If grade level is unclear, check which source table has this student
+            using (MySqlConnection conn = Database.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Check Basic Ed
+                    string queryBasic = "SELECT COUNT(*) FROM basic_ed_enrollment WHERE student_number = @id OR lrn = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(queryBasic, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", studentID);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (count > 0) return "Basic Ed";
+                    }
+
+                    // Check JHS
+                    string queryJHS = "SELECT COUNT(*) FROM jhs_enrollments WHERE student_number = @id OR lrn = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(queryJHS, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", studentID);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (count > 0) return "Junior High";
+                    }
+
+                    // Check SHS
+                    string querySHS = "SELECT COUNT(*) FROM shs_enrollments WHERE student_number = @id OR application_no = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(querySHS, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", studentID);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (count > 0) return "Senior High";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error determining student type: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return null;
+        }
+
+        // ✅ NEW METHOD: Return to Students form
+        private void ShowStudentsForm()
+        {
+            Control parentContainer = this.Parent;
+            if (parentContainer == null) return;
+
+            // Remove all controls from parent
+            parentContainer.Controls.Clear();
+
+            // Add this Students form back
+            this.Dock = DockStyle.Fill;
+            parentContainer.Controls.Add(this);
+            this.Show();
+
+            // Refresh the data
+            LoadStudentData();
         }
 
         private void EditStudent(string studentID)
@@ -478,7 +613,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void cbGradeLevel_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbGradeLevel_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             tbSearch.Clear();
             string selectedGrade = cbGradeLevel.SelectedItem.ToString();
@@ -486,9 +621,57 @@ namespace CFCA_ADMIN
             LoadStudentData(selectedGrade, searchKeyword);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void tbSearch_TextChanged_1(object sender, EventArgs e)
         {
+            string selectedGrade = cbGradeLevel.SelectedItem?.ToString() ?? "All";
+            string searchKeyword = tbSearch.Text.Trim();
 
+            if (selectedGrade != "All")
+            {
+                // Use SQL filter for specific grade
+                LoadStudentData(selectedGrade, searchKeyword);
+            }
+            else
+            {
+                // Just filter existing rows in DataGridView
+                string search = searchKeyword.ToLower();
+
+                foreach (DataGridViewRow row in dtgStudents.Rows)
+                {
+                    bool visible =
+                        row.Cells["Grades"].Value.ToString().ToLower().Contains(search) ||
+                        row.Cells["strand"].Value.ToString().ToLower().Contains(search) ||
+                        row.Cells["name"].Value.ToString().ToLower().Contains(search) ||
+                        row.Cells["payment_status"].Value.ToString().ToLower().Contains(search);
+
+                    row.Visible = visible;
+                }
+            }
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                LoadStudentData(cbGradeLevel.SelectedItem?.ToString() ?? "All", tbSearch.Text.Trim());
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                LoadStudentData(cbGradeLevel.SelectedItem?.ToString() ?? "All", tbSearch.Text.Trim());
+            }
+        }
+
+        private void UpdatePaginationLabel()
+        {
+            lblPageInfo.Text = $"Page {currentPage} of {totalPages} ({totalRecords} records)";
+            btnPrev.Enabled = currentPage > 1;
+            btnNext.Enabled = currentPage < totalPages;
         }
     }
 }

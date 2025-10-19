@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 
 namespace CFCA_ADMIN
 {
@@ -27,89 +28,6 @@ namespace CFCA_ADMIN
             {
                 lblTitle.Text = "Edit Admin";
                 btnSave.Text = "Update";
-            }
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            // Validate input
-            if (!ValidateInput())
-                return;
-
-            if (tbPassword.Text != tbConfirmPassword.Text)
-            {
-                MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                using (MySqlConnection conn = Database.GetConnection())
-                {
-                    conn.Open();
-
-                    string query;
-                    MySqlCommand cmd;
-
-                    if (editingAdminId == null)
-                    {
-                        // INSERT logic with hashed password
-                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tbPassword.Text);
-
-                        query = "INSERT INTO admin_accounts (firstname, middlename, lastname, gender, role, contact_no, email, photo, username, password) " +
-                                "VALUES (@fname, @mname, @lname, @gender, @role, @contact, @email, @photo, @username, @password)";
-                        cmd = new MySqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@password", hashedPassword);
-                    }
-                    else
-                    {
-                        // UPDATE logic (password optional)
-                        query = "UPDATE admin_accounts SET firstname=@fname, middlename=@mname, lastname=@lname, gender=@gender, " +
-                                "role=@role, contact_no=@contact, email=@email, photo=@photo, username=@username";
-
-                        if (!string.IsNullOrEmpty(tbPassword.Text))
-                        {
-                            query += ", password=@password";
-                        }
-
-                        query += " WHERE id=@id";
-                        cmd = new MySqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", editingAdminId);
-
-                        if (!string.IsNullOrEmpty(tbPassword.Text))
-                        {
-                            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tbPassword.Text); // Fixed: single declaration
-                            cmd.Parameters.AddWithValue("@password", hashedPassword);
-                        }
-                    }
-
-                    // Common parameters
-                    cmd.Parameters.AddWithValue("@fname", tbFirstname.Text);
-                    cmd.Parameters.AddWithValue("@mname", tbMiddlename.Text);
-                    cmd.Parameters.AddWithValue("@lname", tbLastname.Text);
-                    cmd.Parameters.AddWithValue("@gender", cbGender.SelectedItem?.ToString() ?? "");
-                    cmd.Parameters.AddWithValue("@role", cbRole.SelectedItem?.ToString() ?? "");
-                    cmd.Parameters.AddWithValue("@contact", tbContact.Text);
-                    cmd.Parameters.AddWithValue("@email", tbEmail.Text);
-                    cmd.Parameters.AddWithValue("@username", tbUsername.Text);
-
-                    // Image processing
-                    Image img = btnChooseImage.Image;
-                    byte[] imageBytes = img != null ? ImageToByteArray(img) : new byte[0];
-                    cmd.Parameters.AddWithValue("@photo", imageBytes);
-
-                    // Execute
-                    cmd.ExecuteNonQuery();
-
-                    string message = editingAdminId == null ? "Admin successfully added!" : "Admin successfully updated!";
-                    MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error saving admin: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -154,7 +72,7 @@ namespace CFCA_ADMIN
                 tbContact.Focus();
                 return false;
             }
-            // Contact number must start with 09
+
             if (!tbContact.Text.StartsWith("09"))
             {
                 MessageBox.Show("Contact number must start with '09'.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -162,7 +80,6 @@ namespace CFCA_ADMIN
                 return false;
             }
 
-            // Contact number length validation (11 digits)
             if (tbContact.Text.Length != 11)
             {
                 MessageBox.Show("Contact number must be exactly 11 digits (09xxxxxxxxx).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -178,7 +95,6 @@ namespace CFCA_ADMIN
                 return false;
             }
 
-            // Email format validation
             if (!IsValidEmail(tbEmail.Text))
             {
                 MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -202,7 +118,6 @@ namespace CFCA_ADMIN
                 return false;
             }
 
-            // Username length validation
             if (tbUsername.Text.Length < 3)
             {
                 MessageBox.Show("Username must be at least 3 characters long.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -210,46 +125,82 @@ namespace CFCA_ADMIN
                 return false;
             }
 
-            // Password validation for new admin
-            if (editingAdminId == null && string.IsNullOrWhiteSpace(tbPassword.Text))
+            // ✅ Password validation
+            if (editingAdminId == null)
             {
-                MessageBox.Show("Password is required for new admin.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tbPassword.Focus();
-                return false;
+                // New admin – password required
+                if (string.IsNullOrWhiteSpace(tbPassword.Text))
+                {
+                    MessageBox.Show("Password is required for new admin.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbPassword.Focus();
+                    return false;
+                }
+
+                if (!IsPasswordStrong(tbPassword.Text))
+                {
+                    MessageBox.Show("Password must be at least 8 characters long and contain:\n" +
+                        "• At least one uppercase letter\n" +
+                        "• At least one lowercase letter\n" +
+                        "• At least one number\n" +
+                        "• At least one special character",
+                        "Password Requirements", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    tbPassword.Focus();
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(tbConfirmPassword.Text))
+                {
+                    MessageBox.Show("Please confirm your password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbConfirmPassword.Focus();
+                    return false;
+                }
+
+                if (tbPassword.Text != tbConfirmPassword.Text)
+                {
+                    MessageBox.Show("Passwords do not match.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbConfirmPassword.Focus();
+                    return false;
+                }
             }
-
-            if (!IsPasswordStrong(tbPassword.Text))
+            else
             {
-                MessageBox.Show("Password must be at least 8 characters long and contain:\n" +
-                    "• At least one uppercase letter\n" +
-                    "• At least one lowercase letter\n" +
-                    "• At least one number\n" +
-                    "• At least one special character",
-                    "Password Requirements", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // Editing admin – password optional
+                if (!string.IsNullOrWhiteSpace(tbPassword.Text))
+                {
+                    if (!IsPasswordStrong(tbPassword.Text))
+                    {
+                        MessageBox.Show("Password must be at least 8 characters long and contain:\n" +
+                            "• At least one uppercase letter\n" +
+                            "• At least one lowercase letter\n" +
+                            "• At least one number\n" +
+                            "• At least one special character",
+                            "Password Requirements", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                tbPassword.Focus();
-                return false;
-            }
+                        tbPassword.Focus();
+                        return false;
+                    }
 
-            // Confirm Password validation
-            if (!string.IsNullOrWhiteSpace(tbPassword.Text) && string.IsNullOrWhiteSpace(tbConfirmPassword.Text))
-            {
-                MessageBox.Show("Please confirm your password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tbConfirmPassword.Focus();
-                return false;
-            }
+                    if (string.IsNullOrWhiteSpace(tbConfirmPassword.Text))
+                    {
+                        MessageBox.Show("Please confirm your password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        tbConfirmPassword.Focus();
+                        return false;
+                    }
 
-            // Password match validation
-            if (!string.IsNullOrWhiteSpace(tbPassword.Text) && tbPassword.Text != tbConfirmPassword.Text)
-            {
-                MessageBox.Show("Passwords do not match.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tbConfirmPassword.Focus();
-                return false;
+                    if (tbPassword.Text != tbConfirmPassword.Text)
+                    {
+                        MessageBox.Show("Passwords do not match.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        tbConfirmPassword.Focus();
+                        return false;
+                    }
+                }
             }
 
             return true;
         }
-        
+
+
 
         // Helper method for email validation
         private bool IsValidEmail(string email)
@@ -347,8 +298,142 @@ namespace CFCA_ADMIN
             }
         }
 
+        private void add_Admin_Load(object sender, EventArgs e)
+        {
+            tbPassword.UseSystemPasswordChar = true;
+            tbConfirmPassword.UseSystemPasswordChar = true;
 
-        private void btnChooseImage_Click_1(object sender, EventArgs e)
+            newpasswordShown = false;
+            confirmpasswordShown = false;
+        }
+        bool newpasswordShown = false;
+        bool confirmpasswordShown = false;
+
+        private void btnSave_Click_1(object sender, EventArgs e)
+        {
+            // Validate input except password
+            if (!ValidateInput())
+                return;
+
+            try
+            {
+                using (MySqlConnection conn = Database.GetConnection())
+                {
+                    conn.Open();
+
+                    string query;
+                    MySqlCommand cmd;
+
+                    if (editingAdminId == null)
+                    {
+                        // ✅ INSERT logic with password
+                        if (string.IsNullOrWhiteSpace(tbPassword.Text) || string.IsNullOrWhiteSpace(tbConfirmPassword.Text))
+                        {
+                            MessageBox.Show("Password and Confirm Password are required for new admin.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (tbPassword.Text != tbConfirmPassword.Text)
+                        {
+                            MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tbPassword.Text);
+
+                        query = "INSERT INTO admin_accounts (firstname, middlename, lastname, gender, role, contact_no, email, photo, username, password) " +
+                                "VALUES (@fname, @mname, @lname, @gender, @role, @contact, @email, @photo, @username, @password)";
+                        cmd = new MySqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@password", hashedPassword);
+                    }
+                    else
+                    {
+                        // ✅ UPDATE logic
+                        query = "UPDATE admin_accounts SET firstname=@fname, middlename=@mname, lastname=@lname, gender=@gender, " +
+                                "role=@role, contact_no=@contact, email=@email, photo=@photo, username=@username";
+
+                        // If password fields are not empty → update password
+                        if (!string.IsNullOrWhiteSpace(tbPassword.Text))
+                        {
+                            if (tbPassword.Text != tbConfirmPassword.Text)
+                            {
+                                MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tbPassword.Text);
+                            query += ", password=@password";
+                        }
+
+                        query += " WHERE id=@id";
+                        cmd = new MySqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", editingAdminId);
+
+                        if (!string.IsNullOrWhiteSpace(tbPassword.Text))
+                        {
+                            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tbPassword.Text);
+                            cmd.Parameters.AddWithValue("@password", hashedPassword);
+                        }
+                    }
+
+                    // Common fields
+                    cmd.Parameters.AddWithValue("@fname", tbFirstname.Text);
+                    cmd.Parameters.AddWithValue("@mname", tbMiddlename.Text);
+                    cmd.Parameters.AddWithValue("@lname", tbLastname.Text);
+                    cmd.Parameters.AddWithValue("@gender", cbGender.SelectedItem?.ToString() ?? "");
+                    cmd.Parameters.AddWithValue("@role", cbRole.SelectedItem?.ToString() ?? "");
+                    cmd.Parameters.AddWithValue("@contact", tbContact.Text);
+                    cmd.Parameters.AddWithValue("@email", tbEmail.Text);
+                    cmd.Parameters.AddWithValue("@username", tbUsername.Text);
+
+                    Image img = btnChooseImage.Image;
+                    byte[] imageBytes = img != null ? ImageToByteArray(img) : new byte[0];
+                    cmd.Parameters.AddWithValue("@photo", imageBytes);
+
+                    cmd.ExecuteNonQuery();
+
+                    string message = editingAdminId == null ? "Admin successfully added!" : "Admin successfully updated!";
+                    MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // ✅ NEW: Update Form2 if editing current user
+                    if (editingAdminId != null)
+                    {
+                        UpdateForm2IfNeeded(editingAdminId, imageBytes);
+                    }
+
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving admin: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ✅ NEW METHOD: Check and update Form2
+        private void UpdateForm2IfNeeded(string editedAdminId, byte[] newImageData)
+        {
+            // Find the open Form2 instance
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is Form2 form2)
+                {
+                    // Build the display name
+                    string displayName = tbFirstname.Text;
+                    if (!string.IsNullOrWhiteSpace(tbMiddlename.Text))
+                        displayName += " " + tbMiddlename.Text;
+                    displayName += " " + tbLastname.Text;
+
+                    string newRole = cbRole.SelectedItem?.ToString() ?? "";
+
+                    // Update Form2
+                    form2.RefreshUserInfo(displayName, newImageData, newRole);
+                    break;
+                }
+            }
+        }
+
+        private void btnChooseImage_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
@@ -367,32 +452,12 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void tbContact_TextChanged(object sender, EventArgs e)
         {
-            this.Close();
+
         }
 
-        private void tbContact_KeyPress_1(object sender, KeyPressEventArgs e)
-        {
-            // Allow only digits, backspace, and delete
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
-            {
-                e.Handled = true; // Cancel the key press
-            }
-        }
-
-        private void add_Admin_Load(object sender, EventArgs e)
-        {
-            tbPassword.UseSystemPasswordChar = true;
-            tbConfirmPassword.UseSystemPasswordChar = true;
-
-            newpasswordShown = false;
-            confirmpasswordShown = false;
-        }
-        bool newpasswordShown = false;
-        bool confirmpasswordShown = false;
-
-        private void guna2PictureBox2_Click_1(object sender, EventArgs e)
+        private void guna2PictureBox2_Click(object sender, EventArgs e)
         {
             if (newpasswordShown)
             {
@@ -408,7 +473,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void guna2PictureBox3_Click_1(object sender, EventArgs e)
+        private void guna2PictureBox3_Click(object sender, EventArgs e)
         {
             if (confirmpasswordShown)
             {
@@ -422,6 +487,20 @@ namespace CFCA_ADMIN
                 guna2PictureBox3.Image = Properties.Resources.view;
                 confirmpasswordShown = true;
             }
+        }
+
+        private void tbContact_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow only digits, backspace, and delete
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true; // Cancel the key press
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
