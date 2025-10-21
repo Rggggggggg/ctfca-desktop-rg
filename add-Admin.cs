@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace CFCA_ADMIN
 {
     public partial class add_Admin : Form
     {
-       
+
         private string editingAdminId = null;
 
         public add_Admin(string adminId)
@@ -255,15 +256,17 @@ namespace CFCA_ADMIN
                             byte[] imageBytes = (byte[])reader["photo"];
                             using (var ms = new System.IO.MemoryStream(imageBytes))
                             {
-                                btnChooseImage.Image = Image.FromStream(ms);
-                                btnChooseImage.Text = ""; // clear text
+                                Image loadedImage = Image.FromStream(ms);
+                                btnChooseImage.Image = MakeCircularImage(loadedImage);
+                                btnChooseImage.Text = "";
+                                btnChooseImage.ImageSize = new Size(btnChooseImage.Width, btnChooseImage.Height);
                             }
                         }
                     }
                 }
             }
         }
-       
+
         private byte[] ImageToByteArray(Image image)
         {
             int maxWidth = 300;  // Resize width
@@ -435,21 +438,7 @@ namespace CFCA_ADMIN
 
         private void btnChooseImage_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Title = "Select an Image";
-                ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
 
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    using (var img = Image.FromFile(ofd.FileName))
-                    {
-                        btnChooseImage.Image = new Bitmap(img); // clone the image
-                        btnChooseImage.Text = "";
-                    }
-
-                }
-            }
         }
 
         private void tbContact_TextChanged(object sender, EventArgs e)
@@ -498,9 +487,61 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            // Show confirmation dialog before canceling
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Cancel Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+
+            }
+        }
+
+        private void btnChooseImage_Click_1(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Title = "Select an Image";
+                ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    using (var img = Image.FromFile(ofd.FileName))
+                    {
+                        btnChooseImage.Image = MakeCircularImage(img); // clone the image
+                        btnChooseImage.Text = "";
+
+                        btnChooseImage.ImageSize = new Size(btnChooseImage.Width, btnChooseImage.Height);
+                    }
+
+                }
+            }
+        }
+        private Image MakeCircularImage(Image original)
+        {
+            int size = Math.Min(original.Width, original.Height);
+            Bitmap circularBitmap = new Bitmap(size, size);
+            using (Graphics g = Graphics.FromImage(circularBitmap))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddEllipse(0, 0, size, size);
+                    g.SetClip(path);
+
+                    // This line zooms and centers the image so it fills the circle completely
+                    g.DrawImage(original, -((original.Width - size) / 2), -((original.Height - size) / 2), original.Width, original.Height);
+                }
+            }
+            return circularBitmap;
         }
     }
 }
