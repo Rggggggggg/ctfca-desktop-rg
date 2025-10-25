@@ -91,7 +91,7 @@ namespace CFCA_ADMIN
             }
 
             // Check if grade level is selected
-            if (cbGradeLevel.SelectedItem == null)
+            if (cbGradeLevel.SelectedIndex <= 0)
             {
                 MessageBox.Show("Please select a grade level.", "Validation Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -127,6 +127,23 @@ namespace CFCA_ADMIN
         private void add_Subject_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            // Show confirmation dialog before canceling
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Cancel Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+
+            }
         }
     }
 }

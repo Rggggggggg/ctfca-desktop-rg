@@ -25,6 +25,7 @@ namespace CFCA_ADMIN
             {
                 Dock = DockStyle.Fill
             };
+            this.Resize += dashboard_Resize;
         }
         private void CenterLabelInPanel(object sender, EventArgs e)
         {
@@ -82,14 +83,13 @@ namespace CFCA_ADMIN
             int totalJhs = 0;
             int totalShs = 0;
 
+            // --- Basic Ed ---
             using (var conn = Database.GetConnection())
             {
                 conn.Open();
-
-                // --- Basic Ed ---
-                using (MySqlCommand cmd = new MySqlCommand(
+                using (var cmd = new MySqlCommand(
                     "SELECT MONTH(submitted_at) AS m, COUNT(*) AS total FROM basic_ed_enrollment GROUP BY MONTH(submitted_at)", conn))
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
+                using (var rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
@@ -99,11 +99,15 @@ namespace CFCA_ADMIN
                         totalBasicEd += total;
                     }
                 }
+            }
 
-                // --- JHS ---
-                using (MySqlCommand cmd = new MySqlCommand(
+            // --- JHS ---
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                using (var cmd = new MySqlCommand(
                     "SELECT MONTH(date_created) AS m, COUNT(*) AS total FROM jhs_enrollments GROUP BY MONTH(date_created)", conn))
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
+                using (var rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
@@ -113,11 +117,15 @@ namespace CFCA_ADMIN
                         totalJhs += total;
                     }
                 }
+            }
 
-                // --- SHS ---
-                using (MySqlCommand cmd = new MySqlCommand(
+            // --- SHS ---
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                using (var cmd = new MySqlCommand(
                     "SELECT MONTH(created_at) AS m, COUNT(*) AS total FROM shs_enrollments GROUP BY MONTH(created_at)", conn))
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
+                using (var rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
@@ -129,34 +137,19 @@ namespace CFCA_ADMIN
                 }
             }
 
-            // --- Line Chart (Trends) ---
+            // --- Line Chart ---
             cartesianChart.Series = new SeriesCollection
             {
-                new LineSeries
-                {
-                    Title = "Basic Ed",
-                    Values = new ChartValues<int>(basicEdData)
-                },
-                new LineSeries
-                {
-                    Title = "JHS",
-                    Values = new ChartValues<int>(jhsData)
-                },
-                new LineSeries
-                {
-                    Title = "SHS",
-                    Values = new ChartValues<int>(shsData)
-                }
+                new LineSeries { Title = "Basic Ed", Values = new ChartValues<int>(basicEdData) },
+                new LineSeries { Title = "JHS", Values = new ChartValues<int>(jhsData) },
+                new LineSeries { Title = "SHS", Values = new ChartValues<int>(shsData) }
             };
 
             cartesianChart.AxisX.Clear();
             cartesianChart.AxisX.Add(new Axis
             {
                 Title = "Months",
-                Labels = new[]
-                {
-                    "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-                }
+                Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
             });
 
             cartesianChart.AxisY.Clear();
@@ -168,31 +161,17 @@ namespace CFCA_ADMIN
 
             cartesianChart.LegendLocation = LegendLocation.Right;
 
-            // --- Pie Chart (Percentages) ---
+            // --- Pie Chart ---
             pieChartControl.Series = new SeriesCollection
             {
-                new PieSeries
-                {
-                    Title = "Basic Ed",
-                    Values = new ChartValues<int> { totalBasicEd },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "JHS",
-                    Values = new ChartValues<int> { totalJhs },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "SHS",
-                    Values = new ChartValues<int> { totalShs },
-                    DataLabels = true
-                }
+                new PieSeries { Title = "Basic Ed", Values = new ChartValues<int> { totalBasicEd }, DataLabels = true },
+                new PieSeries { Title = "JHS", Values = new ChartValues<int> { totalJhs }, DataLabels = true },
+                new PieSeries { Title = "SHS", Values = new ChartValues<int> { totalShs }, DataLabels = true }
             };
 
             pieChartControl.LegendLocation = LegendLocation.Right;
         }
+
 
         public int TotalEnrollments()
         {
@@ -279,17 +258,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void guna2Panel7_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void guna2Panel10_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnInstructor_Click_1(object sender, EventArgs e)
+        private void btnInstructor_Click(object sender, EventArgs e)
         {
             Form parentform = this.FindForm();
             OverlayForm overlay = new OverlayForm(parentform);
@@ -299,7 +268,7 @@ namespace CFCA_ADMIN
             overlay.Dispose();
         }
 
-        private void btnSched_Click_1(object sender, EventArgs e)
+        private void btnSched_Click(object sender, EventArgs e)
         {
             Form parentform = this.FindForm();
             OverlayForm overlay = new OverlayForm(parentform);
@@ -309,7 +278,7 @@ namespace CFCA_ADMIN
             overlay.Dispose();
         }
 
-        private void btnSubs_Click_1(object sender, EventArgs e)
+        private void btnSubs_Click(object sender, EventArgs e)
         {
             Form parentform = this.FindForm();
             OverlayForm overlay = new OverlayForm(parentform);
@@ -317,6 +286,35 @@ namespace CFCA_ADMIN
             add_Subject AddScheds = new add_Subject();
             AddScheds.ShowDialog();
             overlay.Dispose();
+        }
+
+        private void dashboard_Resize(object sender, EventArgs e)
+        {
+            AdjustPanelSizes();
+        }
+
+        private void AdjustPanelSizes()
+        {
+            // Calculate available height from top of panel to bottom of form
+            int topPosition = panelPercentages.Top;
+            int bottomMargin = 20;
+            int availableHeight = this.ClientSize.Height - topPosition - bottomMargin;
+
+            // Calculate proportional heights
+            int percentagesHeight = (int)(availableHeight * 0.50); // 50% of available space
+            int gapBetween = 25;
+            int quickActionsHeight = (int)(availableHeight * 0.40); // 40% of available space
+
+            // Apply minimum sizes to prevent panels from becoming too small
+            percentagesHeight = Math.Max(percentagesHeight, 250); // Minimum 250px
+            quickActionsHeight = Math.Max(quickActionsHeight, 180); // Minimum 180px
+
+            // Set sizes
+            panelPercentages.Height = percentagesHeight;
+            panelQuickActions.Height = quickActionsHeight;
+
+            // Position Quick Actions below Percentages
+            panelQuickActions.Top = panelPercentages.Bottom + gapBetween;
         }
     }
 }

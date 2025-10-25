@@ -498,7 +498,7 @@
             this.btnChooseImage.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(126)))), ((int)(((byte)(234)))));
             this.btnChooseImage.Image = ((System.Drawing.Image)(resources.GetObject("btnChooseImage.Image")));
             this.btnChooseImage.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnChooseImage.Location = new System.Drawing.Point(184, 105);
+            this.btnChooseImage.Location = new System.Drawing.Point(170, 105);
             this.btnChooseImage.Name = "btnChooseImage";
             this.btnChooseImage.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             this.btnChooseImage.Size = new System.Drawing.Size(130, 115);

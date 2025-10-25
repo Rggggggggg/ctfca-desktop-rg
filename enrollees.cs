@@ -267,28 +267,29 @@ namespace CFCA_ADMIN
 
             if (result != DialogResult.Yes) return;
 
-            using (MySqlConnection conn = Database.GetConnection())
+            bool success = false; // ✅ track success
+            try
             {
-                try
+                using (MySqlConnection conn = Database.GetConnection())
                 {
                     conn.Open();
 
                     string transferQuery = @"
-                        INSERT INTO students (
-                            student_number, level_for_registrar, lrn, level_applied, surname, first_name, middle_name, age, gender, dob,
-                            pob, citizenship, religion, address, contact, email, father_name, father_occupation, father_office, father_contact, 
-                            father_email, mother_name, mother_occupation, mother_office, mother_contact, mother_email, status, guardian_name, guardian_relation, 
-                            guardian_occupation, guardian_contact, guardian_email, has_siblings, prev_ctfcai, prev_grade, prev_sy, prev_school, prev_school_sy, prev_school_addr, 
-                            health_conditions, emergency_name, emergency_address, emergency_contact, student_photo, signature_filename, signature_date
-                        )
-                        SELECT 
-                            student_number, level_for_registrar, lrn, level_applied, surname, first_name, middle_name, age, gender, dob,
-                            pob, citizenship, religion, address, contact, email, father_name, father_occupation, father_office, father_contact, 
-                            father_email, mother_name, mother_occupation, mother_office, mother_contact, mother_email, status, guardian_name, guardian_relation, 
-                            guardian_occupation, guardian_contact, guardian_email, has_siblings, prev_ctfcai, prev_grade, prev_sy, prev_school, prev_school_sy, prev_school_addr, 
-                            health_conditions, emergency_name, emergency_address, emergency_contact, student_photo, signature_filename, signature_date
-                        FROM basic_ed_enrollment 
-                        WHERE student_number = @student_number";
+                            INSERT INTO students (
+                                student_number, level_for_registrar, lrn, level_applied, surname, first_name, middle_name, age, gender, dob,
+                                pob, citizenship, religion, address, contact, email, father_name, father_occupation, father_office, father_contact, 
+                                father_email, mother_name, mother_occupation, mother_office, mother_contact, mother_email, status, guardian_name, guardian_relation, 
+                                guardian_occupation, guardian_contact, guardian_email, has_siblings, prev_ctfcai, prev_grade, prev_sy, prev_school, prev_school_sy, prev_school_addr, 
+                                health_conditions, emergency_name, emergency_address, emergency_contact, student_photo, signature_filename, signature_date
+                            )
+                            SELECT 
+                                student_number, level_for_registrar, lrn, level_applied, surname, first_name, middle_name, age, gender, dob,
+                                pob, citizenship, religion, address, contact, email, father_name, father_occupation, father_office, father_contact, 
+                                father_email, mother_name, mother_occupation, mother_office, mother_contact, mother_email, status, guardian_name, guardian_relation, 
+                                guardian_occupation, guardian_contact, guardian_email, has_siblings, prev_ctfcai, prev_grade, prev_sy, prev_school, prev_school_sy, prev_school_addr, 
+                                health_conditions, emergency_name, emergency_address, emergency_contact, student_photo, signature_filename, signature_date
+                            FROM basic_ed_enrollment 
+                            WHERE student_number = @student_number";
 
                     MySqlCommand transferCmd = new MySqlCommand(transferQuery, conn);
                     transferCmd.Parameters.AddWithValue("@student_number", studentNumber);
@@ -298,26 +299,33 @@ namespace CFCA_ADMIN
                     if (rowsAffected > 0)
                     {
                         UpdateStatus(conn, studentNumber, "Confirmed");
-                        bool notificationSent = await NotifyStudent(studentNumber, name, email, "Approved", yearLevel);
-
-                        MessageBox.Show($"Student {name} enrolled successfully" +
-                            (notificationSent ? "" : "\nNote: Email notification failed to send"),
-                            "Enrollment Confirmed", MessageBoxButtons.OK,
-                            notificationSent ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
-
-                        LoadStudentData(cbStatusFilter.Text);
+                        success = true; // ✅ mark as successful
                     }
                     else
                     {
                         MessageBox.Show("Student record not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                } // ✅ Connection automatically closes here
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            // ✅ Now the connection is closed before sending email
+            if (success)
+            {
+                bool notificationSent = await NotifyStudent(studentNumber, name, email, "Approved", yearLevel);
+
+                MessageBox.Show($"Student {name} enrolled successfully" +
+                    (notificationSent ? "" : "\nNote: Email notification failed to send"),
+                    "Enrollment Confirmed", MessageBoxButtons.OK,
+                    notificationSent ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+
+                LoadStudentData(cbStatusFilter.Text);
             }
         }
+
 
         private async void RejectEnrollment(string studentNumber, string name, string email, string yearLevel)
         {
@@ -385,7 +393,8 @@ namespace CFCA_ADMIN
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync("http://localhost/CAPSTONE_PROJ/api/cs/notify-student.php", content);
+                    //HttpResponseMessage response = await client.PostAsync("http://localhost/CAPSTONE_PROJ/api/cs/notify-student.php", content);
+                    HttpResponseMessage response = await client.PostAsync("https://ctfca-enrollment.onrender.com/api/cs/notify-student.php", content);
                     string result = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)
@@ -404,57 +413,14 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void ViewEnrollmentDetails(string studentNumber)
-        {
-            if (string.IsNullOrEmpty(studentNumber))
-            {
-                MessageBox.Show("Invalid student record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            using (MySqlConnection conn = Database.GetConnection())
-            {
-                try
-                {
-                    conn.Open();
-                    string query = "SELECT * FROM basic_ed_enrollment WHERE student_number = @student_number";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@student_number", studentNumber);
-
-                    DataTable dt = new DataTable();
-                    new MySqlDataAdapter(cmd).Fill(dt);
-                    if (dt.Rows.Count == 0)
-                    {
-                        MessageBox.Show("Student record not found.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    string siblingQuery = @"SELECT name, grade_occupation FROM basic_ed_siblings 
-                                    WHERE enrollment_id = (SELECT id FROM basic_ed_enrollment WHERE student_number = @student_number)";
-                    MySqlCommand sibCmd = new MySqlCommand(siblingQuery, conn);
-                    sibCmd.Parameters.AddWithValue("@student_number", studentNumber);
-                    DataTable sibs = new DataTable();
-                    new MySqlDataAdapter(sibCmd).Fill(sibs);
-
-                    // ✅ Use new clean form
-                    StudentDetailsForm form = new StudentDetailsForm(dt.Rows[0], sibs);
-                    form.ShowDialog();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading details: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         private void TbSearch_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void CbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

@@ -22,7 +22,9 @@ namespace CFCA_ADMIN
         private DateTime codeExpiry;
         private int attemptCount = 0;
         private const int MAX_ATTEMPTS = 3;
-        private const int CODE_EXPIRY_MINUTES = 10;
+        private const int CODE_EXPIRY_MINUTES = 1;
+        private bool isCodeExpired = false;
+
 
         public VerifyCodeForm(string email, string code, int adminId)
         {
@@ -78,6 +80,8 @@ namespace CFCA_ADMIN
             if (DateTime.Now > codeExpiry)
             {
                 expiryTimer.Stop();
+                isCodeExpired = true;
+
                 MessageBox.Show("Verification code has expired. Please request a new one.",
                     "Code Expired", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -92,6 +96,12 @@ namespace CFCA_ADMIN
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
+            if (isCodeExpired)
+            {
+                MessageBox.Show("Verification code has expired. Please request a new one.",
+                    "Code Expired", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             string enteredCode = tb1.Text + tb2.Text + tb3.Text + tb4.Text + tb5.Text + tb6.Text;
 
             // Check if code is complete
@@ -179,6 +189,13 @@ namespace CFCA_ADMIN
 
         private async void CheckIfComplete()
         {
+            if (isCodeExpired)
+            {
+                MessageBox.Show("Verification code has expired. Please request a new one.",
+                    "Code Expired", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string code = tb1.Text + tb2.Text + tb3.Text + tb4.Text + tb5.Text + tb6.Text;
 
             if (code.Length == 6)
@@ -276,10 +293,18 @@ namespace CFCA_ADMIN
                 string newCode = GenerateSecureCode();
                 expectedCode = newCode;
                 codeExpiry = DateTime.Now.AddMinutes(CODE_EXPIRY_MINUTES); // Reset expiry
+                isCodeExpired = false;
 
                 ClearAllTextBoxes();
                 attemptCount = 0;
                 tb1.Focus();
+
+                // reset timer
+                if (expiryTimer != null)
+                {
+                    expiryTimer.Stop();
+                    expiryTimer.Start();
+                }
 
                 bool emailSent = await SendVerificationEmailAsync(userEmail, newCode);
 

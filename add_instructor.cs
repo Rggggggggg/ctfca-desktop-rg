@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace CFCA_ADMIN
             }
             tbAge.KeyPress += NumericOnly_KeyPress;
             tbContact.KeyPress += NumericOnly_KeyPress;
+            dtpDOB.ValueChanged += dtpDOB_ValueChanged;
         }
 
         private void instructor_Load(object sender, EventArgs e)
@@ -144,8 +146,10 @@ namespace CFCA_ADMIN
                                 byte[] imgBytes = (byte[])reader["image"];
                                 using (var ms = new System.IO.MemoryStream(imgBytes))
                                 {
-                                    btnChooseImage.Image = Image.FromStream(ms);
+                                    Image loadedImage = Image.FromStream(ms);
+                                    btnChooseImage.Image = MakeCircularImage(loadedImage);
                                     btnChooseImage.Text = "";
+                                    btnChooseImage.ImageSize = new Size(btnChooseImage.Width, btnChooseImage.Height);
                                 }
                             }
 
@@ -257,8 +261,17 @@ namespace CFCA_ADMIN
 
         private bool ValidateInputs()
         {
+            // Image validation
+            if (btnChooseImage.Image == null)
+            {
+                MessageBox.Show("Please upload an instructor image.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                btnChooseImage.Focus();
+                return false;
+            }
+
             // Required field validation
-            if (string.IsNullOrWhiteSpace(tbFirstname.Text))
+            if (string.IsNullOrWhiteSpace(tbFirstname.Text) || tbFirstname.Text == "First name")
             {
                 MessageBox.Show("First name is required.", "Validation Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -266,11 +279,65 @@ namespace CFCA_ADMIN
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(tbLastname.Text))
+            if (string.IsNullOrWhiteSpace(tbLastname.Text) || tbLastname.Text == "Last name")
             {
                 MessageBox.Show("Last name is required.", "Validation Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tbLastname.Focus();
+                return false;
+            }
+
+            // Gender validation (check if placeholder is selected)
+            if (cbGender.SelectedIndex <= 0)
+            {
+                MessageBox.Show("Please select a gender.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbGender.Focus();
+                return false;
+            }
+
+            // Civil Status validation
+            if (cbCivilStatus.SelectedIndex <= 0)
+            {
+                MessageBox.Show("Please select a civil status.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbCivilStatus.Focus();
+                return false;
+            }
+
+            // Date of Birth validation
+            DateTime selectedDate = dtpDOB.Value.Date;
+            DateTime today = DateTime.Today;
+
+            // Check if date is in the future
+            if (selectedDate > today)
+            {
+                MessageBox.Show("Date of birth cannot be in the future.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpDOB.Focus();
+                return false;
+            }
+
+            // Calculate age from date of birth
+            int calculatedAge = today.Year - selectedDate.Year;
+            if (selectedDate.Date > today.AddYears(-calculatedAge))
+                calculatedAge--;
+
+            // Check minimum age (18 for instructors)
+            if (calculatedAge < 18)
+            {
+                MessageBox.Show("Instructor must be at least 18 years old.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpDOB.Focus();
+                return false;
+            }
+
+            // Check maximum reasonable age (e.g., 100 years old)
+            if (calculatedAge > 100)
+            {
+                MessageBox.Show("Please enter a valid date of birth.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpDOB.Focus();
                 return false;
             }
 
@@ -294,8 +361,20 @@ namespace CFCA_ADMIN
                 }
             }
 
+            // Phone validation (basic)
+            if (!string.IsNullOrWhiteSpace(tbContact.Text) || tbContact.Text != "09XX XXX XXXX")
+            {
+                if (tbContact.Text.Length < 10)
+                {
+                    MessageBox.Show("Please enter a valid contact number.", "Validation Error",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbContact.Focus();
+                    return false;
+                }
+            }
+
             // Email validation (basic)
-            if (!string.IsNullOrWhiteSpace(tbEmail.Text))
+            if (!string.IsNullOrWhiteSpace(tbEmail.Text) || tbEmail.Text != "email@example.com")
             {
                 if (!IsValidEmail(tbEmail.Text))
                 {
@@ -306,17 +385,16 @@ namespace CFCA_ADMIN
                 }
             }
 
-            // Phone validation (basic)
-            if (!string.IsNullOrWhiteSpace(tbContact.Text))
+          
+            // Employment validation
+            if (cbEmployment.SelectedIndex < 0)
             {
-                if (tbContact.Text.Length < 10)
-                {
-                    MessageBox.Show("Please enter a valid contact number.", "Validation Error",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    tbContact.Focus();
-                    return false;
-                }
+                MessageBox.Show("Please select an employment status.", "Validation Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbEmployment.Focus();
+                return false;
             }
+
 
             // Check if at least one grade level is selected
             if (clbGradesLevelHandled.CheckedItems.Count == 0)
@@ -369,26 +447,34 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
-            this.Close();
+            // Allow control keys (e.g., Backspace, Delete)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Block non-numeric input
+            }
         }
 
-        private void guna2Button2_Click(object sender, EventArgs e)
+
+        private void btnCancel_Click(object sender, EventArgs e)
         {
+            // Show confirmation dialog before canceling
             DialogResult result = MessageBox.Show(
-                    "Are you sure you want to go back? Unsaved changes will be lost.",
-                    "Confirm Exit",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Cancel Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
             if (result == DialogResult.Yes)
             {
                 this.Close();
+
             }
         }
 
-        private void btnSave_Click_1(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             // Validate inputs first
             if (!ValidateInputs())
@@ -506,41 +592,62 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnChooseImage_Click(object sender, EventArgs e)
-            {
-                using (OpenFileDialog ofd = new OpenFileDialog())
-                {
-                    ofd.Title = "Select an Image";
-                    ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-
-                    if (ofd.ShowDialog() == DialogResult.OK)
-                    {
-                        using (var img = Image.FromFile(ofd.FileName))
-                        {
-                        // Dispose previous image to free memory
-                        if (btnChooseImage.Image != null)
-                            btnChooseImage.Image.Dispose();
-
-                        btnChooseImage.Image = new Bitmap(img); // clone the image
-                        btnChooseImage.Text = "";
-                    }
-
-                    }
-                }
-            }
-        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e)
+        private void btnChooseImage_Click_1(object sender, EventArgs e)
         {
-            // Allow control keys (e.g., Backspace, Delete)
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                e.Handled = true; // Block non-numeric input
+                ofd.Title = "Select an Image";
+                ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    using (var img = Image.FromFile(ofd.FileName))
+                    {
+                        btnChooseImage.Image = MakeCircularImage(img); // clone the image
+                        btnChooseImage.Text = "";
+
+                        btnChooseImage.ImageSize = new Size(btnChooseImage.Width, btnChooseImage.Height);
+                    }
+
+                }
             }
         }
 
-
-        private void ScrollPanel_Paint(object sender, PaintEventArgs e)
+        private Image MakeCircularImage(Image original)
         {
+            int size = Math.Min(original.Width, original.Height);
+            Bitmap circularBitmap = new Bitmap(size, size);
+            using (Graphics g = Graphics.FromImage(circularBitmap))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
 
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddEllipse(0, 0, size, size);
+                    g.SetClip(path);
+
+                    // This line zooms and centers the image so it fills the circle completely
+                    g.DrawImage(original, -((original.Width - size) / 2), -((original.Height - size) / 2), original.Width, original.Height);
+                }
+            }
+            return circularBitmap;
+        }
+
+        private void dtpDOB_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime selectedDate = dtpDOB.Value.Date;
+            DateTime today = DateTime.Today;
+
+            // Calculate age
+            int age = today.Year - selectedDate.Year;
+            if (selectedDate.Date > today.AddYears(-age))
+                age--;
+
+            // Only update if age is reasonable
+            if (age >= 0 && age <= 100)
+            {
+                tbAge.Text = age.ToString();
+            }
         }
     }
 }

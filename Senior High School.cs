@@ -315,9 +315,17 @@ namespace CFCA_ADMIN
                     transferCmd.Parameters.AddWithValue("@student_number", studentNumber);
 
                     int rowsAffected = transferCmd.ExecuteNonQuery();
+                    conn.Close(); // ✅ Close connection early before sending email
+
                     if (rowsAffected > 0)
                     {
-                        UpdateStatus(conn, studentNumber, "Confirmed");
+                        using (MySqlConnection updateConn = Database.GetConnection())
+                        {
+                            updateConn.Open();
+                            UpdateStatus(updateConn, studentNumber, "Confirmed");
+                        }
+
+                        // ✅ Now safely send email notification
                         bool notificationSent = await NotifyStudent(studentNumber, name, email, "Approved", yearLevel);
 
                         MessageBox.Show($"Student {name} enrolled successfully" +
@@ -405,7 +413,8 @@ namespace CFCA_ADMIN
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync("http://localhost/CAPSTONE_PROJ/api/cs/notify-student-shs.php", content);
+                    //HttpResponseMessage response = await client.PostAsync("http://localhost/CAPSTONE_PROJ/api/cs/notify-student-shs.php", content);
+                    HttpResponseMessage response = await client.PostAsync("https://ctfca-enrollment.onrender.com/api/cs/notify-student-shs.php", content);
                     string result = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)

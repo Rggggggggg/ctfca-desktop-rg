@@ -38,8 +38,7 @@ namespace CFCA_ADMIN
             }
             else
             {
-                this.Text = "Add New Schedule";
-                btnSave.Text = "Save";
+                btnSave.Text = "Save Changes";
             }
         }
 
@@ -679,19 +678,7 @@ namespace CFCA_ADMIN
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            // Show confirmation dialog before canceling
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to cancel? Any unsaved changes will be lost.",
-                "Cancel Confirmation",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
-            {
-                this.Close();
-               
-            }
+           
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -1037,5 +1024,21 @@ namespace CFCA_ADMIN
             }
         }
 
+        private void btnCancel_Click_1(object sender, EventArgs e)
+        {
+            // Show confirmation dialog before canceling
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Cancel Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+
+            }
         }
+    }
 }

@@ -24,35 +24,36 @@ namespace CFCA_ADMIN
                 {
                     conn.Open();
                     string query = @"SELECT enrollment_open, enrollment_message, 
-                                   last_updated FROM enrollment_settings WHERE id = 1";
+                           last_updated FROM enrollment_settings WHERE id = 1";
 
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        bool isOpen = Convert.ToBoolean(reader["enrollment_open"]);
-
-                        // Update status label
-                        if (isOpen)
+                        if (reader.Read())
                         {
-                            lblStatusValue.Text = "OPEN";
-                            lblStatusValue.ForeColor = System.Drawing.Color.Green;
-                        }
-                        else
-                        {
-                            lblStatusValue.Text = "CLOSED";
-                            lblStatusValue.ForeColor = System.Drawing.Color.Red;
-                        }
+                            bool isOpen = Convert.ToBoolean(reader["enrollment_open"]);
 
-                        // Update message
-                        txtEnrollmentMessage.Text = reader["enrollment_message"].ToString();
+                            // Update status label
+                            if (isOpen)
+                            {
+                                lblStatusValue.Text = "OPEN";
+                                lblStatusValue.ForeColor = System.Drawing.Color.Green;
+                            }
+                            else
+                            {
+                                lblStatusValue.Text = "CLOSED";
+                                lblStatusValue.ForeColor = System.Drawing.Color.Red;
+                            }
 
-                        // Update last updated time
-                        if (!reader.IsDBNull(reader.GetOrdinal("last_updated")))
-                        {
-                            DateTime lastUpdated = Convert.ToDateTime(reader["last_updated"]);
-                            lblLastUpdatedValue.Text = lastUpdated.ToString("MMM dd, yyyy hh:mm tt");
+                            // Update message
+                            txtEnrollmentMessage.Text = reader["enrollment_message"].ToString();
+
+                            // Update last updated time
+                            if (!reader.IsDBNull(reader.GetOrdinal("last_updated")))
+                            {
+                                DateTime lastUpdated = Convert.ToDateTime(reader["last_updated"]);
+                                lblLastUpdatedValue.Text = lastUpdated.ToString("MMM dd, yyyy hh:mm tt");
+                            }
                         }
                     }
                 }
@@ -96,39 +97,41 @@ namespace CFCA_ADMIN
 
         private void UpdateEnrollmentStatus(bool isOpen)
         {
+            // 1️⃣ Open connection for update
             using (MySqlConnection conn = Database.GetConnection())
             {
                 try
                 {
                     conn.Open();
                     string query = @"UPDATE enrollment_settings 
-                                   SET enrollment_open = @status,
-                                       updated_by = @user,
-                                       last_updated = NOW()
-                                   WHERE id = 1";
+                             SET enrollment_open = @status,
+                                 updated_by = @user,
+                                 last_updated = NOW()
+                             WHERE id = 1";
 
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@status", isOpen);
-                    cmd.Parameters.AddWithValue("@user", "Admin"); // Replace with actual admin username
-
-                    cmd.ExecuteNonQuery();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@status", isOpen);
+                        cmd.Parameters.AddWithValue("@user", "Admin");
+                        cmd.ExecuteNonQuery();
+                    }
 
                     string statusText = isOpen ? "OPENED" : "CLOSED";
                     MessageBox.Show(
                         $"Enrollment has been {statusText} successfully!",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information
                     );
 
-                    LoadEnrollmentStatus(); // Refresh display
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error updating enrollment status: " + ex.Message,
                                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
+            } // ✅ connection is fully disposed here
+
+            // 2️⃣ Now safely reload enrollment status
+            LoadEnrollmentStatus();
         }
 
         private void btnUpdateMessage_Click(object sender, EventArgs e)
@@ -148,14 +151,15 @@ namespace CFCA_ADMIN
                 {
                     conn.Open();
                     string query = @"UPDATE enrollment_settings 
-                                   SET enrollment_message = @message,
-                                       last_updated = NOW()
-                                   WHERE id = 1";
+                           SET enrollment_message = @message,
+                               last_updated = NOW()
+                           WHERE id = 1";
 
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@message", message);
-
-                    cmd.ExecuteNonQuery();
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@message", message);
+                        cmd.ExecuteNonQuery();
+                    }
 
                     MessageBox.Show("Enrollment message updated successfully!",
                                   "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);

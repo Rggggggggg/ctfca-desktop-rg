@@ -22,51 +22,53 @@ namespace CFCA_ADMIN
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = tbUsername.Text;
-            string password = tbPassword.Text;
-
+            string username = tbUsername.Text.Trim();
+            string password = tbPassword.Text.Trim();
 
             using (MySqlConnection conn = Database.GetConnection())
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT firstname, middlename, lastname,role, password, photo FROM admin_accounts WHERE username=@username";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@username", username);
-
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    string query = "SELECT firstname, middlename, lastname, role, password, photo FROM admin_accounts WHERE username=@username";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        string hashedPassword = reader.GetString("password");
+                        cmd.Parameters.AddWithValue("@username", username);
 
-                        // Verify hashed password
-                        if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            string firstName = reader.GetString("firstname");
-                            string middleName = reader.GetString("middlename");
-                            string lastName = reader.GetString("lastname");
-                            string role = reader.GetString("role");
+                            if (reader.Read())
+                            {
+                                string hashedPassword = reader.GetString("password");
 
-                            string displayName = $"{firstName} {middleName} {lastName}";
+                                if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                                {
+                                    string firstName = reader.GetString("firstname");
+                                    string middleName = reader.GetString("middlename");
+                                    string lastName = reader.GetString("lastname");
+                                    string role = reader.GetString("role");
+                                    string displayName = $"{firstName} {middleName} {lastName}";
 
-                            // Read the blob
-                            byte[] imgData = (byte[])reader["photo"];
+                                    byte[] imgData = (byte[])reader["photo"];
 
+                                    // ✅ Close the reader BEFORE showing Form2
+                                    reader.Close();
+                                    conn.Close();
 
-                            Form2 dashboard = new Form2(displayName, imgData, role); // pass byte[] image
-                            dashboard.Show();
-                            this.Hide();
+                                    Form2 dashboard = new Form2(displayName, imgData, role);
+                                    dashboard.Show();
+                                    this.Hide();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Invalid username or password.", "Login Failed");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid username or password.", "Login Failed");
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Invalid username or password.", "Login Failed");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid username or password.", "Login Failed");
                     }
                 }
                 catch (Exception ex)
@@ -80,7 +82,7 @@ namespace CFCA_ADMIN
 
         private void guna2PictureBox1_Click(object sender, EventArgs e)
         {
-            if(passwordShown)
+            if (passwordShown)
             {
                 tbPassword.UseSystemPasswordChar = true;
                 guna2PictureBox1.Image = Properties.Resources.hide; // Assuming you have an eye_closed image

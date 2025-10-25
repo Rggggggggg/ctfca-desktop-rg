@@ -570,15 +570,17 @@ namespace CFCA_ADMIN
 
         private void UpdatePaymentStatus(string studentID, string name)
         {
-            using (MySqlConnection conn = Database.GetConnection())
+            string newStatus = "";
+
+            try
             {
-                try
+                using (MySqlConnection conn = Database.GetConnection())
                 {
                     conn.Open();
 
-                    // Get current payment status
+                    // Step 1: Get current payment status
+                    string currentStatus = "Not Paid";
                     string getStatusQuery = "SELECT COALESCE(payment_status, 'Not Paid') AS current_status FROM students WHERE COALESCE(student_number, lrn, application_no) = @id";
-                    string currentStatus = "";
 
                     using (MySqlCommand getCmd = new MySqlCommand(getStatusQuery, conn))
                     {
@@ -586,15 +588,14 @@ namespace CFCA_ADMIN
                         using (MySqlDataReader reader = getCmd.ExecuteReader())
                         {
                             if (reader.Read())
-                            {
                                 currentStatus = reader["current_status"].ToString();
-                            }
                         }
                     }
 
-                    // Toggle payment status
-                    string newStatus = currentStatus == "Paid" ? "Not Paid" : "Paid";
+                    // Step 2: Toggle payment status
+                    newStatus = currentStatus == "Paid" ? "Not Paid" : "Paid";
 
+                    // Step 3: Update payment status
                     string updateQuery = "UPDATE students SET payment_status = @status WHERE COALESCE(student_number, lrn, application_no) = @id";
                     using (MySqlCommand updateCmd = new MySqlCommand(updateQuery, conn))
                     {
@@ -603,15 +604,26 @@ namespace CFCA_ADMIN
                         updateCmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show($"Payment status for {name} has been updated to: {newStatus}", "Payment Status Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadStudentData();
+                    // Step 4: Forcefully close connection to kill MySQL process immediately
+                    conn.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error updating payment status: " + ex.Message);
-                }
+
+                // Step 5: Reload data AFTER connection is fully closed
+                MessageBox.Show($"Payment status for {name} has been updated to: {newStatus}",
+                    "Payment Status Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Reload only after connection is disposed
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                LoadStudentData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating payment status: " + ex.Message);
             }
         }
+
 
         private void cbGradeLevel_SelectedIndexChanged_1(object sender, EventArgs e)
         {
