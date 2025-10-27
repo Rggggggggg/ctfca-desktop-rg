@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace CFCA_ADMIN
 {
@@ -31,23 +33,6 @@ namespace CFCA_ADMIN
         {
             cbGradeLevel.SelectedIndex = 0;
             LoadStudentData();
-
-            // Set cursor to hand pointer for photo column
-            dtgStudents.CellMouseEnter += DtgStudents_CellMouseEnter;
-            dtgStudents.CellMouseLeave += DtgStudents_CellMouseLeave;
-        }
-
-        private void DtgStudents_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex == 0) // Photo column
-            {
-                dtgStudents.Cursor = Cursors.Hand;
-            }
-        }
-
-        private void DtgStudents_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            dtgStudents.Cursor = Cursors.Default;
         }
 
         private void LoadStudentData(string gradeFilter = "All", string searchKeyword = "")
@@ -102,10 +87,7 @@ namespace CFCA_ADMIN
                             dtgStudents.Rows.Clear();
                             while (reader.Read())
                             {
-                                Image studentPhoto = LoadStudentPhoto(reader);
-
                                 dtgStudents.Rows.Add(
-                                    studentPhoto,
                                     reader["id"].ToString(),
                                     reader["name"].ToString(),
                                     reader["level_applied"].ToString(),
@@ -128,219 +110,6 @@ namespace CFCA_ADMIN
             }
         }
 
-        /// <summary>
-        /// Load student photo from database and resize to fixed dimensions
-        /// </summary>
-        private Image LoadStudentPhoto(MySqlDataReader reader)
-        {
-            try
-            {
-                Image originalImage = null;
-
-                // First try to get student_photo
-                if (reader["student_photo"] != DBNull.Value)
-                {
-                    byte[] imageBytes = (byte[])reader["student_photo"];
-                    originalImage = ByteArrayToImage(imageBytes);
-                }
-                // If student_photo is not available, try id_photo_filename
-                else if (reader["id_photo_filename"] != DBNull.Value)
-                {
-                    byte[] imageBytes = (byte[])reader["id_photo_filename"];
-                    originalImage = ByteArrayToImage(imageBytes);
-                }
-
-                if (originalImage != null)
-                {
-                    // Resize image to fixed dimensions
-                    Image resizedImage = ResizeImage(originalImage, PHOTO_WIDTH, PHOTO_HEIGHT);
-                    originalImage.Dispose(); // Dispose the original to free memory
-                    return resizedImage;
-                }
-
-                // If no photo in database, return default image
-                return GetDefaultImage();
-            }
-            catch (Exception ex)
-            {
-                // Log error and return default image
-                Console.WriteLine("Error loading student photo: " + ex.Message);
-                return GetDefaultImage();
-            }
-        }
-
-        /// <summary>
-        /// Resize image to fixed dimensions while maintaining aspect ratio
-        /// </summary>
-        private Image ResizeImage(Image image, int width, int height)
-        {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
-
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new System.Drawing.Imaging.ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
-        }
-
-        /// <summary>
-        /// Convert byte array from database BLOB to Image
-        /// </summary>
-        private Image ByteArrayToImage(byte[] byteArray)
-        {
-            try
-            {
-                if (byteArray == null || byteArray.Length == 0)
-                    return null;
-
-                using (MemoryStream ms = new MemoryStream(byteArray))
-                {
-                    return Image.FromStream(ms);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error converting byte array to image: " + ex.Message);
-                return GetDefaultImage();
-            }
-        }
-
-        /// <summary>
-        /// Get default no-image photo with fixed size
-        /// </summary>
-        private Image GetDefaultImage()
-        {
-            try
-            {
-                string defaultImagePath = Path.Combine(Application.StartupPath, "Resources", "no-image.png");
-                if (File.Exists(defaultImagePath))
-                {
-                    Image defaultImage = Image.FromFile(defaultImagePath);
-                    return ResizeImage(defaultImage, PHOTO_WIDTH, PHOTO_HEIGHT);
-                }
-
-                // If file doesn't exist, create a simple placeholder image with fixed size
-                Bitmap placeholder = new Bitmap(PHOTO_WIDTH, PHOTO_HEIGHT);
-                using (Graphics g = Graphics.FromImage(placeholder))
-                {
-                    g.Clear(Color.LightGray);
-                    using (Font font = new Font("Arial", 8))
-                    using (StringFormat sf = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                    {
-                        g.DrawString("No Image", font, Brushes.Black, new RectangleF(0, 0, PHOTO_WIDTH, PHOTO_HEIGHT), sf);
-                    }
-                }
-                return placeholder;
-            }
-            catch
-            {
-                // Final fallback - create a basic bitmap with fixed size
-                return new Bitmap(PHOTO_WIDTH, PHOTO_HEIGHT);
-            }
-        }
-
-        /// <summary>
-        /// Get full-size original photo from database
-        /// </summary>
-        private Image GetFullSizePhoto(string studentID)
-        {
-            using (MySqlConnection conn = Database.GetConnection())
-            {
-                try
-                {
-                    conn.Open();
-                    string query = @"SELECT student_photo, id_photo_filename 
-                                   FROM students 
-                                   WHERE COALESCE(student_number, lrn, application_no) = @id";
-
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", studentID);
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                // First try to get student_photo
-                                if (reader["student_photo"] != DBNull.Value)
-                                {
-                                    byte[] imageBytes = (byte[])reader["student_photo"];
-                                    return ByteArrayToImage(imageBytes);
-                                }
-                                // If student_photo is not available, try id_photo_filename
-                                else if (reader["id_photo_filename"] != DBNull.Value)
-                                {
-                                    byte[] imageBytes = (byte[])reader["id_photo_filename"];
-                                    return ByteArrayToImage(imageBytes);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading full-size photo: " + ex.Message);
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Show full-size photo in a modal dialog
-        /// </summary>
-        private void ShowPhotoViewer(string studentID, string studentName)
-        {
-            Image fullPhoto = GetFullSizePhoto(studentID);
-
-            if (fullPhoto == null)
-            {
-                MessageBox.Show("No photo available for this student.", "No Photo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Create a form to display the photo
-            Form photoViewer = new Form
-            {
-                Text = $"Student Photo - {studentName}",
-                StartPosition = FormStartPosition.CenterParent,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                BackColor = Color.White,
-                Size = new Size(Math.Min(fullPhoto.Width + 40, 800), Math.Min(fullPhoto.Height + 80, 600))
-            };
-
-            PictureBox pictureBox = new PictureBox
-            {
-                Image = fullPhoto,
-                SizeMode = PictureBoxSizeMode.Zoom,
-                Dock = DockStyle.Fill
-            };
-
-            photoViewer.Controls.Add(pictureBox);
-
-            // Dispose the image when form closes
-            photoViewer.FormClosed += (s, e) => {
-                pictureBox.Image = null;
-                fullPhoto?.Dispose();
-            };
-
-            photoViewer.ShowDialog();
-        }
-
         // Declare an event
         public event Action<string, string> GradesRequested;
 
@@ -353,13 +122,6 @@ namespace CFCA_ADMIN
             string gradeLevel = dtgStudents.Rows[e.RowIndex].Cells["Grades"].Value?.ToString();
             string columnName = dtgStudents.Columns[e.ColumnIndex].Name;
             string strand = dtgStudents.Rows[e.RowIndex].Cells["strand"].Value?.ToString();
-
-            // Check if photo column was clicked (first column, index 0)
-            if (e.ColumnIndex == 0)
-            {
-                ShowPhotoViewer(studentID, name);
-                return;
-            }
 
             if (columnName == "btnConfirm")
             {
@@ -684,6 +446,31 @@ namespace CFCA_ADMIN
             lblPageInfo.Text = $"Page {currentPage} of {totalPages} ({totalRecords} records)";
             btnPrev.Enabled = currentPage > 1;
             btnNext.Enabled = currentPage < totalPages;
+        }
+
+        private void lblPageInfo_Click(object sender, EventArgs e)
+        {
+            if (totalPages == 0) return;
+
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"Enter page number (1 - {totalPages}):",
+                "Go to Page",
+                currentPage.ToString()
+            );
+
+            if (int.TryParse(input, out int requestedPage))
+            {
+                if (requestedPage >= 1 && requestedPage <= totalPages)
+                {
+                    currentPage = requestedPage;
+                    LoadStudentData(cbGradeLevel.SelectedItem?.ToString() ?? "All", tbSearch.Text.Trim());
+                }
+                else
+                {
+                    MessageBox.Show($"Please enter a number between 1 and {totalPages}.",
+                        "Invalid Page", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
     }
 }

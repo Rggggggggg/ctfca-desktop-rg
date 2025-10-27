@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentDetailsFormBasic));
             this.statuslabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.applicantNumberlabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblStatus = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -137,6 +138,7 @@
             this.studentPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lbl = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
+            this.btnBack = new Guna.UI2.WinForms.Guna2Button();
             this.enrolleesinformation.SuspendLayout();
             this.enrolleesinfotab.SuspendLayout();
             this.fambg.SuspendLayout();
@@ -150,7 +152,7 @@
             this.statuslabel.BackColor = System.Drawing.Color.Transparent;
             this.statuslabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statuslabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.statuslabel.Location = new System.Drawing.Point(553, 114);
+            this.statuslabel.Location = new System.Drawing.Point(553, 149);
             this.statuslabel.Margin = new System.Windows.Forms.Padding(2);
             this.statuslabel.Name = "statuslabel";
             this.statuslabel.Size = new System.Drawing.Size(47, 22);
@@ -162,7 +164,7 @@
             this.applicantNumberlabel.BackColor = System.Drawing.Color.Transparent;
             this.applicantNumberlabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applicantNumberlabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.applicantNumberlabel.Location = new System.Drawing.Point(371, 114);
+            this.applicantNumberlabel.Location = new System.Drawing.Point(371, 149);
             this.applicantNumberlabel.Margin = new System.Windows.Forms.Padding(2);
             this.applicantNumberlabel.Name = "applicantNumberlabel";
             this.applicantNumberlabel.Size = new System.Drawing.Size(33, 22);
@@ -174,7 +176,7 @@
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblStatus.Location = new System.Drawing.Point(605, 114);
+            this.lblStatus.Location = new System.Drawing.Point(605, 149);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(2);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(30, 22);
@@ -186,7 +188,7 @@
             this.lblLRN.BackColor = System.Drawing.Color.Transparent;
             this.lblLRN.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLRN.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblLRN.Location = new System.Drawing.Point(420, 114);
+            this.lblLRN.Location = new System.Drawing.Point(420, 149);
             this.lblLRN.Margin = new System.Windows.Forms.Padding(2);
             this.lblLRN.Name = "lblLRN";
             this.lblLRN.Size = new System.Drawing.Size(30, 22);
@@ -198,7 +200,7 @@
             this.lblStudentNumber.BackColor = System.Drawing.Color.Transparent;
             this.lblStudentNumber.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStudentNumber.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblStudentNumber.Location = new System.Drawing.Point(265, 114);
+            this.lblStudentNumber.Location = new System.Drawing.Point(265, 149);
             this.lblStudentNumber.Margin = new System.Windows.Forms.Padding(2);
             this.lblStudentNumber.Name = "lblStudentNumber";
             this.lblStudentNumber.Size = new System.Drawing.Size(30, 22);
@@ -210,7 +212,7 @@
             this.studentNumberlabel.BackColor = System.Drawing.Color.Transparent;
             this.studentNumberlabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.studentNumberlabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.studentNumberlabel.Location = new System.Drawing.Point(138, 114);
+            this.studentNumberlabel.Location = new System.Drawing.Point(138, 149);
             this.studentNumberlabel.Margin = new System.Windows.Forms.Padding(2);
             this.studentNumberlabel.Name = "studentNumberlabel";
             this.studentNumberlabel.Size = new System.Drawing.Size(118, 22);
@@ -222,7 +224,7 @@
             this.lblFullName.BackColor = System.Drawing.Color.Transparent;
             this.lblFullName.Font = new System.Drawing.Font("Microsoft YaHei", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFullName.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblFullName.Location = new System.Drawing.Point(138, 84);
+            this.lblFullName.Location = new System.Drawing.Point(138, 119);
             this.lblFullName.Margin = new System.Windows.Forms.Padding(2);
             this.lblFullName.Name = "lblFullName";
             this.lblFullName.Size = new System.Drawing.Size(302, 26);
@@ -239,11 +241,11 @@
             this.enrolleesinformation.Controls.Add(this.educbg);
             this.enrolleesinformation.Controls.Add(this.healthandcare);
             this.enrolleesinformation.ItemSize = new System.Drawing.Size(185, 40);
-            this.enrolleesinformation.Location = new System.Drawing.Point(24, 177);
+            this.enrolleesinformation.Location = new System.Drawing.Point(24, 213);
             this.enrolleesinformation.Margin = new System.Windows.Forms.Padding(2);
             this.enrolleesinformation.Name = "enrolleesinformation";
             this.enrolleesinformation.SelectedIndex = 0;
-            this.enrolleesinformation.Size = new System.Drawing.Size(953, 357);
+            this.enrolleesinformation.Size = new System.Drawing.Size(953, 376);
             this.enrolleesinformation.TabButtonHoverState.BorderColor = System.Drawing.Color.Empty;
             this.enrolleesinformation.TabButtonHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
             this.enrolleesinformation.TabButtonHoverState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
@@ -296,7 +298,7 @@
             this.enrolleesinfotab.Margin = new System.Windows.Forms.Padding(2);
             this.enrolleesinfotab.Name = "enrolleesinfotab";
             this.enrolleesinfotab.Padding = new System.Windows.Forms.Padding(2);
-            this.enrolleesinfotab.Size = new System.Drawing.Size(945, 309);
+            this.enrolleesinfotab.Size = new System.Drawing.Size(945, 328);
             this.enrolleesinfotab.TabIndex = 0;
             this.enrolleesinfotab.Text = "Personal Information";
             // 
@@ -636,7 +638,7 @@
             this.fambg.Margin = new System.Windows.Forms.Padding(2);
             this.fambg.Name = "fambg";
             this.fambg.Padding = new System.Windows.Forms.Padding(2);
-            this.fambg.Size = new System.Drawing.Size(945, 309);
+            this.fambg.Size = new System.Drawing.Size(945, 328);
             this.fambg.TabIndex = 1;
             this.fambg.Text = "Family Background";
             this.fambg.UseVisualStyleBackColor = true;
@@ -1137,7 +1139,7 @@
             this.educbg.Margin = new System.Windows.Forms.Padding(2);
             this.educbg.Name = "educbg";
             this.educbg.Padding = new System.Windows.Forms.Padding(2);
-            this.educbg.Size = new System.Drawing.Size(945, 309);
+            this.educbg.Size = new System.Drawing.Size(945, 328);
             this.educbg.TabIndex = 2;
             this.educbg.Text = "Education Background";
             this.educbg.UseVisualStyleBackColor = true;
@@ -1286,7 +1288,7 @@
             this.healthandcare.Margin = new System.Windows.Forms.Padding(2);
             this.healthandcare.Name = "healthandcare";
             this.healthandcare.Padding = new System.Windows.Forms.Padding(2);
-            this.healthandcare.Size = new System.Drawing.Size(945, 309);
+            this.healthandcare.Size = new System.Drawing.Size(945, 328);
             this.healthandcare.TabIndex = 3;
             this.healthandcare.Text = "Health And Emergency";
             this.healthandcare.UseVisualStyleBackColor = true;
@@ -1490,7 +1492,7 @@
             // studentPicture
             // 
             this.studentPicture.ImageRotate = 0F;
-            this.studentPicture.Location = new System.Drawing.Point(24, 74);
+            this.studentPicture.Location = new System.Drawing.Point(24, 109);
             this.studentPicture.Margin = new System.Windows.Forms.Padding(2);
             this.studentPicture.Name = "studentPicture";
             this.studentPicture.Size = new System.Drawing.Size(88, 76);
@@ -1502,7 +1504,7 @@
             this.lbl.BackColor = System.Drawing.Color.Transparent;
             this.lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
-            this.lbl.Location = new System.Drawing.Point(24, 19);
+            this.lbl.Location = new System.Drawing.Point(24, 54);
             this.lbl.Name = "lbl";
             this.lbl.Size = new System.Drawing.Size(226, 27);
             this.lbl.TabIndex = 27;
@@ -1513,10 +1515,33 @@
             this.guna2Elipse1.BorderRadius = 20;
             this.guna2Elipse1.TargetControl = this.enrolleesinformation;
             // 
+            // btnBack
+            // 
+            this.btnBack.BorderColor = System.Drawing.Color.LightGray;
+            this.btnBack.BorderRadius = 5;
+            this.btnBack.BorderThickness = 1;
+            this.btnBack.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnBack.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnBack.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnBack.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnBack.FillColor = System.Drawing.Color.White;
+            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBack.ForeColor = System.Drawing.Color.DimGray;
+            this.btnBack.Image = ((System.Drawing.Image)(resources.GetObject("btnBack.Image")));
+            this.btnBack.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnBack.Location = new System.Drawing.Point(24, 12);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(121, 36);
+            this.btnBack.TabIndex = 90;
+            this.btnBack.Text = "Back to List";
+            this.btnBack.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click_1);
+            // 
             // StudentDetailsFormBasic
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lbl);
             this.Controls.Add(this.enrolleesinformation);
             this.Controls.Add(this.statuslabel);
@@ -1528,7 +1553,7 @@
             this.Controls.Add(this.lblFullName);
             this.Controls.Add(this.studentPicture);
             this.Name = "StudentDetailsFormBasic";
-            this.Size = new System.Drawing.Size(992, 552);
+            this.Size = new System.Drawing.Size(992, 607);
             this.Load += new System.EventHandler(this.StudentDetailsFormBasic_Load);
             this.enrolleesinformation.ResumeLayout(false);
             this.enrolleesinfotab.ResumeLayout(false);
@@ -1655,5 +1680,6 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblLevel;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbl;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
+        private Guna.UI2.WinForms.Guna2Button btnBack;
     }
 }

@@ -148,6 +148,12 @@ namespace CFCA_ADMIN
                 }
             }
         }
+
+        public event EventHandler BackButtonClicked;
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
 

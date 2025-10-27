@@ -30,6 +30,7 @@ namespace CFCA_ADMIN
             tbAge.KeyPress += NumericOnly_KeyPress;
             tbContact.KeyPress += NumericOnly_KeyPress;
             dtpDOB.ValueChanged += dtpDOB_ValueChanged;
+            
         }
 
         private void instructor_Load(object sender, EventArgs e)
@@ -456,8 +457,44 @@ namespace CFCA_ADMIN
             }
         }
 
+        private Image MakeCircularImage(Image original)
+        {
+            int size = Math.Min(original.Width, original.Height);
+            Bitmap circularBitmap = new Bitmap(size, size);
+            using (Graphics g = Graphics.FromImage(circularBitmap))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
 
-        private void btnCancel_Click(object sender, EventArgs e)
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddEllipse(0, 0, size, size);
+                    g.SetClip(path);
+
+                    // This line zooms and centers the image so it fills the circle completely
+                    g.DrawImage(original, -((original.Width - size) / 2), -((original.Height - size) / 2), original.Width, original.Height);
+                }
+            }
+            return circularBitmap;
+        }
+
+        private void dtpDOB_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime selectedDate = dtpDOB.Value.Date;
+            DateTime today = DateTime.Today;
+
+            // Calculate age
+            int age = today.Year - selectedDate.Year;
+            if (selectedDate.Date > today.AddYears(-age))
+                age--;
+
+            // Only update if age is reasonable
+            if (age >= 0 && age <= 100)
+            {
+                tbAge.Text = age.ToString();
+            }
+        }
+
+        private void btnCancel_Click_1(object sender, EventArgs e)
         {
             // Show confirmation dialog before canceling
             DialogResult result = MessageBox.Show(
@@ -474,7 +511,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click_1(object sender, EventArgs e)
         {
             // Validate inputs first
             if (!ValidateInputs())
@@ -592,7 +629,7 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnChooseImage_Click_1(object sender, EventArgs e)
+        private void btnChooseImage_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
@@ -610,43 +647,6 @@ namespace CFCA_ADMIN
                     }
 
                 }
-            }
-        }
-
-        private Image MakeCircularImage(Image original)
-        {
-            int size = Math.Min(original.Width, original.Height);
-            Bitmap circularBitmap = new Bitmap(size, size);
-            using (Graphics g = Graphics.FromImage(circularBitmap))
-            {
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                using (GraphicsPath path = new GraphicsPath())
-                {
-                    path.AddEllipse(0, 0, size, size);
-                    g.SetClip(path);
-
-                    // This line zooms and centers the image so it fills the circle completely
-                    g.DrawImage(original, -((original.Width - size) / 2), -((original.Height - size) / 2), original.Width, original.Height);
-                }
-            }
-            return circularBitmap;
-        }
-
-        private void dtpDOB_ValueChanged(object sender, EventArgs e)
-        {
-            DateTime selectedDate = dtpDOB.Value.Date;
-            DateTime today = DateTime.Today;
-
-            // Calculate age
-            int age = today.Year - selectedDate.Year;
-            if (selectedDate.Date > today.AddYears(-age))
-                age--;
-
-            // Only update if age is reasonable
-            if (age >= 0 && age <= 100)
-            {
-                tbAge.Text = age.ToString();
             }
         }
     }

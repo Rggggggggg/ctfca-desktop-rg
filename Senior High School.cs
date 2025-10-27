@@ -12,9 +12,16 @@ namespace CFCA_ADMIN
 {
     public partial class Senior_High_School : UserControl
     {
-        public Senior_High_School()
+        private Form parentForm;
+        private int currentPage = 1;
+        private int recordsPerPage = 10;
+        private int totalRecords = 0;
+        private int totalPages = 0;
+
+        public Senior_High_School(Form parentForm = null)
         {
             InitializeComponent();
+            this.parentForm = parentForm ?? this.FindForm();
         }
 
         private void LoadStudentData(string statusFilter = "Pending")
@@ -24,100 +31,67 @@ namespace CFCA_ADMIN
                 try
                 {
                     conn.Open();
-                    string query = @"SELECT student_number, grade_level,
-                                surname, first_name, middle_name, gender, age,
-                                shsCellphone, shsEmail, application_date, enrollment_status, id_photo_filename
-                                FROM shs_enrollments";
+
+                    // ✅ Count total records first
+                    string countQuery = "SELECT COUNT(*) FROM shs_enrollments";
+                    if (statusFilter != "All")
+                        countQuery += " WHERE enrollment_status = @status";
+
+                    MySqlCommand countCmd = new MySqlCommand(countQuery, conn);
+                    if (statusFilter != "All")
+                        countCmd.Parameters.AddWithValue("@status", statusFilter);
+
+                    totalRecords = Convert.ToInt32(countCmd.ExecuteScalar());
+                    totalPages = (int)Math.Ceiling((double)totalRecords / recordsPerPage);
+
+                    // ✅ Fetch only limited records for current page
+                    int offset = (currentPage - 1) * recordsPerPage;
+                    string query = @"SELECT student_number, grade_level, surname, first_name, middle_name, 
+                            gender, age, shsCellphone, shsEmail, application_date, 
+                            enrollment_status, id_photo_filename
+                            FROM shs_enrollments";
 
                     if (statusFilter != "All")
-                        query += $" WHERE enrollment_status = '{statusFilter}'";
+                        query += " WHERE enrollment_status = @status";
 
-                    query += " ORDER BY application_date DESC";
+                    query += " ORDER BY application_date DESC LIMIT @limit OFFSET @offset";
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
+                    if (statusFilter != "All")
+                        cmd.Parameters.AddWithValue("@status", statusFilter);
+                    cmd.Parameters.AddWithValue("@limit", recordsPerPage);
+                    cmd.Parameters.AddWithValue("@offset", offset);
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         dtgSHS.Rows.Clear();
 
-                        // ✅ Ensure Photo column exists (only once)
-                        if (!dtgSHS.Columns.Contains("colPhoto"))
-                        {
-                            DataGridViewImageColumn colPhoto = new DataGridViewImageColumn();
-                            colPhoto.Name = "colPhoto";
-                            colPhoto.HeaderText = "Photo";
-                            colPhoto.ImageLayout = DataGridViewImageCellLayout.Zoom;
-                            colPhoto.Width = 80;
-                            dtgSHS.Columns.Insert(0, colPhoto);
-                        }
-
-                        dtgSHS.RowTemplate.Height = 60; // make room for the photo
-
                         while (reader.Read())
                         {
-                            // ✅ Convert BLOB to image
-                            Image studentImage = null;
-                            byte[] photoBytes = null;
-                            if (reader["id_photo_filename"] != DBNull.Value)
-                            {
-                                try
-                                {
-                                    photoBytes = (byte[])reader["id_photo_filename"];
-                                    if (photoBytes.Length > 0)
-                                    {
-                                        using (var ms = new System.IO.MemoryStream(photoBytes))
-                                        {
-                                            studentImage = Image.FromStream(ms);
-                                        }
-                                    }
-                                }
-                                catch
-                                {
-                                    studentImage = Properties.Resources.no_image; // fallback image
-                                }
-                            }
-
-                            // Use placeholder if no photo exists
-                            if (studentImage == null)
-                            {
-                                studentImage = Properties.Resources.no_image;
-                            }
-
                             string fullName = $"{reader["surname"]}, {reader["first_name"]} {reader["middle_name"]}";
                             string status = reader["enrollment_status"].ToString();
 
-                            // ✅ Add new photo cell as first column
                             int rowIndex = dtgSHS.Rows.Add(
-                                studentImage, // new column for photo
                                 reader["student_number"].ToString(),
                                 fullName,
                                 reader["grade_level"].ToString(),
                                 reader["gender"].ToString(),
                                 reader["age"].ToString(),
                                 reader["shsCellphone"].ToString(),
-                                Convert.ToDateTime(reader["application_date"]).ToString("MM/dd/yyyy"),
-                                Properties.Resources.edit_interface_sign,
-                                Properties.Resources.delete_square
+                                Convert.ToDateTime(reader["application_date"]).ToString("MM/dd/yyyy")
                             );
 
-                            // Store the full-size photo bytes in the row for later use
-                            if (photoBytes != null && photoBytes.Length > 0)
-                            {
-                                // Store both email and photo bytes in the Tag
-                                dtgSHS.Rows[rowIndex].Tag = new Tuple<string, byte[]>(reader["shsEmail"].ToString(), photoBytes);
-                            }
-                            else
-                            {
-                                dtgSHS.Rows[rowIndex].Tag = new Tuple<string, byte[]>(reader["shsEmail"].ToString(), null);
-                            }
+                            dtgSHS.Rows[rowIndex].Tag = reader["shsEmail"].ToString();
 
-                            // Color code rows
                             if (status == "Confirmed")
                                 dtgSHS.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 230);
                             else if (status == "Rejected")
                                 dtgSHS.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 230, 230);
                         }
                     }
+
+                    // ✅ Update pagination label
+                    lblPageInfo.Text = $"Page {currentPage} of {totalPages}";
                 }
                 catch (Exception ex)
                 {
@@ -126,13 +100,13 @@ namespace CFCA_ADMIN
             }
         }
 
+        private bool viewInfoColumnAdded = false;
         private void Senior_High_School_Load(object sender, EventArgs e)
         {
             cbStatusFilter.SelectedIndex = 0;
             LoadStudentData("Pending");
 
-            // ✅ Add "View Info" button column (if not already added)
-            if (!dtgSHS.Columns.Contains("btnViewInfo"))
+            if (!viewInfoColumnAdded)
             {
                 DataGridViewButtonColumn btnViewInfo = new DataGridViewButtonColumn();
                 btnViewInfo.HeaderText = "Action";
@@ -140,8 +114,8 @@ namespace CFCA_ADMIN
                 btnViewInfo.Text = "View Info";
                 btnViewInfo.UseColumnTextForButtonValue = true;
 
-                // Insert after "Application Date" (index 7 because of photo column at index 0)
-                dtgSHS.Columns.Insert(8, btnViewInfo);
+                dtgSHS.Columns.Insert(7, btnViewInfo);
+                viewInfoColumnAdded = true;
             }
         }
 
@@ -152,9 +126,9 @@ namespace CFCA_ADMIN
             DataGridViewRow row = dtgSHS.Rows[e.RowIndex];
             if (row.Cells.Count <= 0) return;
 
-            string studentNumber = row.Cells[1].Value?.ToString();
-            string name = row.Cells[2].Value?.ToString();
-            string yearLevel = row.Cells[3].Value?.ToString();
+            string studentNumber = row.Cells[0].Value?.ToString();
+            string name = row.Cells[1].Value?.ToString();
+            string yearLevel = row.Cells[2].Value?.ToString();
 
             // Get email from Tag
             string email = "";
@@ -172,85 +146,26 @@ namespace CFCA_ADMIN
                 RejectEnrollment(studentNumber, name, email, yearLevel);
             else if (columnName == "btnViewInfo")
                 ViewEnrollmentDetails(studentNumber);
-            else if (columnName == "colPhoto")
-            {
-                // Show full-size photo when photo cell is clicked
-                ShowFullSizePhoto(row);
-            }
-        }
+            // Create the details user control
+            StudentDetailsFormSHS detailsUC = new StudentDetailsFormSHS();
+            detailsUC.StudentNumber = studentNumber;
 
-        private void ShowFullSizePhoto(DataGridViewRow row)
-        {
-            byte[] photoBytes = null;
-            if (row.Tag is Tuple<string, byte[]> tagData)
+            // Subscribe to Back button event
+            detailsUC.BackButtonClicked += (s, args) =>
             {
-                photoBytes = tagData.Item2;
-            }
+                // Reload Enrollees list when Back is clicked
+                Senior_High_School enrolleesUC = new Senior_High_School(parentForm);
+                Form2 mainForm = parentForm as Form2;
+                mainForm?.LoadControl(enrolleesUC);
+            };
 
-            if (photoBytes != null && photoBytes.Length > 0)
+            // Load the details UserControl into Form2 panel
+            if (parentForm != null)
             {
-                try
+                if (parentForm is Form2 mainForm)
                 {
-                    using (var ms = new System.IO.MemoryStream(photoBytes))
-                    {
-                        Image fullSizeImage = Image.FromStream(ms);
-
-                        // Create a form to display the full-size image
-                        Form imageForm = new Form();
-                        imageForm.Text = $"Student Photo - {row.Cells[1].Value}";
-                        imageForm.Size = new Size(600, 700);
-                        imageForm.StartPosition = FormStartPosition.CenterScreen;
-                        imageForm.BackColor = Color.White;
-                        imageForm.Icon = SystemIcons.Information;
-
-                        // PictureBox to display the image
-                        PictureBox pictureBox = new PictureBox();
-                        pictureBox.Dock = DockStyle.Fill;
-                        pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                        pictureBox.Image = fullSizeImage;
-
-                        // Add student info below the photo
-                        Panel infoPanel = new Panel();
-                        infoPanel.Dock = DockStyle.Bottom;
-                        infoPanel.Height = 80;
-                        infoPanel.BackColor = Color.LightGray;
-                        infoPanel.Padding = new Padding(10);
-
-                        Label infoLabel = new Label();
-                        infoLabel.Text = $"Student: {row.Cells[2].Value}\nStudent #: {row.Cells[1].Value}";
-                        infoLabel.Dock = DockStyle.Fill;
-                        infoLabel.TextAlign = ContentAlignment.MiddleCenter;
-                        infoLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-                        // Close button
-                        Button closeButton = new Button();
-                        closeButton.Text = "Close";
-                        closeButton.Size = new Size(80, 30);
-                        closeButton.Location = new Point(260, 45);
-                        closeButton.BackColor = Color.FromArgb(220, 53, 69);
-                        closeButton.ForeColor = Color.White;
-                        closeButton.FlatStyle = FlatStyle.Flat;
-                        closeButton.Click += (s, e) => imageForm.Close();
-
-                        // Add controls
-                        infoPanel.Controls.Add(infoLabel);
-                        infoPanel.Controls.Add(closeButton);
-                        imageForm.Controls.Add(pictureBox);
-                        imageForm.Controls.Add(infoPanel);
-
-                        imageForm.ShowDialog();
-                    }
+                    mainForm.LoadControl(detailsUC);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error displaying photo: " + ex.Message, "Photo Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("No photo available for this student.", "No Photo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -516,9 +431,9 @@ namespace CFCA_ADMIN
             {
                 if (row.Cells.Count < 3) continue;
 
-                string studentNumber = row.Cells[1].Value?.ToString().ToLower() ?? "";
-                string fullName = row.Cells[2].Value?.ToString().ToLower() ?? "";
-                string yearLevel = row.Cells[3].Value?.ToString().ToLower() ?? "";
+                string studentNumber = row.Cells[0].Value?.ToString().ToLower() ?? "";
+                string fullName = row.Cells[1].Value?.ToString().ToLower() ?? "";
+                string yearLevel = row.Cells[2].Value?.ToString().ToLower() ?? "";
 
                 row.Visible = studentNumber.Contains(filtertext) || fullName.Contains(filtertext) || yearLevel.Contains(filtertext);
             }
@@ -527,8 +442,52 @@ namespace CFCA_ADMIN
         private void cbStatusFilter_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             tbSearch.Clear();
+            currentPage = 1; // reset to first page
             string selectedStatus = cbStatusFilter.SelectedItem?.ToString() ?? "Pending";
             LoadStudentData(selectedStatus);
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                LoadStudentData(cbStatusFilter.Text);
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                LoadStudentData(cbStatusFilter.Text);
+            }
+        }
+
+        private void lblPageInfo_Click(object sender, EventArgs e)
+        {
+            if (totalPages == 0) return;
+
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"Enter page number (1 - {totalPages}):",
+                "Go to Page",
+                currentPage.ToString()
+            );
+
+            if (int.TryParse(input, out int requestedPage))
+            {
+                if (requestedPage >= 1 && requestedPage <= totalPages)
+                {
+                    currentPage = requestedPage;
+                    LoadStudentData(cbStatusFilter.SelectedItem?.ToString() ?? "Pending");
+                }
+                else
+                {
+                    MessageBox.Show($"Please enter a number between 1 and {totalPages}.",
+                        "Invalid Page", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
     }
 }

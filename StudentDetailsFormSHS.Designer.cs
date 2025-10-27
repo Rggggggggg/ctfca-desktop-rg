@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentDetailsFormSHS));
             this.enrolleesinformation = new Guna.UI2.WinForms.Guna2TabControl();
             this.enrolleesinfotab = new System.Windows.Forms.TabPage();
             this.grdlvllabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -186,6 +187,7 @@
             this.studentPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lbl = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
+            this.btnBack = new Guna.UI2.WinForms.Guna2Button();
             this.enrolleesinformation.SuspendLayout();
             this.enrolleesinfotab.SuspendLayout();
             this.fambg.SuspendLayout();
@@ -204,11 +206,11 @@
             this.enrolleesinformation.Controls.Add(this.educbg);
             this.enrolleesinformation.Controls.Add(this.healthandcare);
             this.enrolleesinformation.ItemSize = new System.Drawing.Size(185, 40);
-            this.enrolleesinformation.Location = new System.Drawing.Point(24, 177);
+            this.enrolleesinformation.Location = new System.Drawing.Point(24, 213);
             this.enrolleesinformation.Margin = new System.Windows.Forms.Padding(2);
             this.enrolleesinformation.Name = "enrolleesinformation";
             this.enrolleesinformation.SelectedIndex = 0;
-            this.enrolleesinformation.Size = new System.Drawing.Size(953, 357);
+            this.enrolleesinformation.Size = new System.Drawing.Size(953, 376);
             this.enrolleesinformation.TabButtonHoverState.BorderColor = System.Drawing.Color.Empty;
             this.enrolleesinformation.TabButtonHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
             this.enrolleesinformation.TabButtonHoverState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
@@ -270,7 +272,7 @@
             this.enrolleesinfotab.Margin = new System.Windows.Forms.Padding(2);
             this.enrolleesinfotab.Name = "enrolleesinfotab";
             this.enrolleesinfotab.Padding = new System.Windows.Forms.Padding(2);
-            this.enrolleesinfotab.Size = new System.Drawing.Size(945, 309);
+            this.enrolleesinfotab.Size = new System.Drawing.Size(945, 328);
             this.enrolleesinfotab.TabIndex = 0;
             this.enrolleesinfotab.Text = "Enrollees Information";
             // 
@@ -756,7 +758,7 @@
             this.fambg.Margin = new System.Windows.Forms.Padding(2);
             this.fambg.Name = "fambg";
             this.fambg.Padding = new System.Windows.Forms.Padding(2);
-            this.fambg.Size = new System.Drawing.Size(945, 309);
+            this.fambg.Size = new System.Drawing.Size(945, 328);
             this.fambg.TabIndex = 1;
             this.fambg.Text = "Family Background";
             this.fambg.UseVisualStyleBackColor = true;
@@ -1737,7 +1739,7 @@
             this.educbg.Margin = new System.Windows.Forms.Padding(2);
             this.educbg.Name = "educbg";
             this.educbg.Padding = new System.Windows.Forms.Padding(2);
-            this.educbg.Size = new System.Drawing.Size(945, 309);
+            this.educbg.Size = new System.Drawing.Size(945, 328);
             this.educbg.TabIndex = 2;
             this.educbg.Text = "Education Background";
             this.educbg.UseVisualStyleBackColor = true;
@@ -1841,7 +1843,7 @@
             this.healthandcare.Margin = new System.Windows.Forms.Padding(2);
             this.healthandcare.Name = "healthandcare";
             this.healthandcare.Padding = new System.Windows.Forms.Padding(2);
-            this.healthandcare.Size = new System.Drawing.Size(945, 309);
+            this.healthandcare.Size = new System.Drawing.Size(945, 328);
             this.healthandcare.TabIndex = 3;
             this.healthandcare.Text = "Others";
             this.healthandcare.UseVisualStyleBackColor = true;
@@ -2083,7 +2085,7 @@
             this.fullname.BackColor = System.Drawing.Color.Transparent;
             this.fullname.Font = new System.Drawing.Font("Microsoft YaHei", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fullname.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.fullname.Location = new System.Drawing.Point(132, 78);
+            this.fullname.Location = new System.Drawing.Point(132, 117);
             this.fullname.Margin = new System.Windows.Forms.Padding(2);
             this.fullname.Name = "fullname";
             this.fullname.Size = new System.Drawing.Size(302, 26);
@@ -2095,7 +2097,7 @@
             this.studentNumberlabel.BackColor = System.Drawing.Color.Transparent;
             this.studentNumberlabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.studentNumberlabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.studentNumberlabel.Location = new System.Drawing.Point(132, 108);
+            this.studentNumberlabel.Location = new System.Drawing.Point(132, 147);
             this.studentNumberlabel.Margin = new System.Windows.Forms.Padding(2);
             this.studentNumberlabel.Name = "studentNumberlabel";
             this.studentNumberlabel.Size = new System.Drawing.Size(118, 22);
@@ -2107,7 +2109,7 @@
             this.applicantNumberlabel.BackColor = System.Drawing.Color.Transparent;
             this.applicantNumberlabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applicantNumberlabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.applicantNumberlabel.Location = new System.Drawing.Point(365, 108);
+            this.applicantNumberlabel.Location = new System.Drawing.Point(365, 147);
             this.applicantNumberlabel.Margin = new System.Windows.Forms.Padding(2);
             this.applicantNumberlabel.Name = "applicantNumberlabel";
             this.applicantNumberlabel.Size = new System.Drawing.Size(130, 22);
@@ -2119,7 +2121,7 @@
             this.statuslabel.BackColor = System.Drawing.Color.Transparent;
             this.statuslabel.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statuslabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.statuslabel.Location = new System.Drawing.Point(622, 108);
+            this.statuslabel.Location = new System.Drawing.Point(622, 147);
             this.statuslabel.Margin = new System.Windows.Forms.Padding(2);
             this.statuslabel.Name = "statuslabel";
             this.statuslabel.Size = new System.Drawing.Size(47, 22);
@@ -2131,7 +2133,7 @@
             this.studenNumber.BackColor = System.Drawing.Color.Transparent;
             this.studenNumber.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.studenNumber.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.studenNumber.Location = new System.Drawing.Point(259, 108);
+            this.studenNumber.Location = new System.Drawing.Point(259, 147);
             this.studenNumber.Margin = new System.Windows.Forms.Padding(2);
             this.studenNumber.Name = "studenNumber";
             this.studenNumber.Size = new System.Drawing.Size(30, 22);
@@ -2143,7 +2145,7 @@
             this.applicantNumber.BackColor = System.Drawing.Color.Transparent;
             this.applicantNumber.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applicantNumber.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.applicantNumber.Location = new System.Drawing.Point(504, 108);
+            this.applicantNumber.Location = new System.Drawing.Point(504, 147);
             this.applicantNumber.Margin = new System.Windows.Forms.Padding(2);
             this.applicantNumber.Name = "applicantNumber";
             this.applicantNumber.Size = new System.Drawing.Size(30, 22);
@@ -2155,7 +2157,7 @@
             this.status.BackColor = System.Drawing.Color.Transparent;
             this.status.Font = new System.Drawing.Font("Microsoft YaHei", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.status.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.status.Location = new System.Drawing.Point(674, 108);
+            this.status.Location = new System.Drawing.Point(674, 147);
             this.status.Margin = new System.Windows.Forms.Padding(2);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(30, 22);
@@ -2165,7 +2167,7 @@
             // studentPicture
             // 
             this.studentPicture.ImageRotate = 0F;
-            this.studentPicture.Location = new System.Drawing.Point(24, 74);
+            this.studentPicture.Location = new System.Drawing.Point(24, 113);
             this.studentPicture.Margin = new System.Windows.Forms.Padding(2);
             this.studentPicture.Name = "studentPicture";
             this.studentPicture.Size = new System.Drawing.Size(88, 76);
@@ -2177,7 +2179,7 @@
             this.lbl.BackColor = System.Drawing.Color.Transparent;
             this.lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
-            this.lbl.Location = new System.Drawing.Point(24, 19);
+            this.lbl.Location = new System.Drawing.Point(24, 54);
             this.lbl.Name = "lbl";
             this.lbl.Size = new System.Drawing.Size(226, 27);
             this.lbl.TabIndex = 6;
@@ -2188,11 +2190,34 @@
             this.guna2Elipse1.BorderRadius = 20;
             this.guna2Elipse1.TargetControl = this.enrolleesinformation;
             // 
+            // btnBack
+            // 
+            this.btnBack.BorderColor = System.Drawing.Color.LightGray;
+            this.btnBack.BorderRadius = 5;
+            this.btnBack.BorderThickness = 1;
+            this.btnBack.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnBack.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnBack.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnBack.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnBack.FillColor = System.Drawing.Color.White;
+            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBack.ForeColor = System.Drawing.Color.DimGray;
+            this.btnBack.Image = ((System.Drawing.Image)(resources.GetObject("btnBack.Image")));
+            this.btnBack.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnBack.Location = new System.Drawing.Point(24, 12);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(121, 36);
+            this.btnBack.TabIndex = 92;
+            this.btnBack.Text = "Back to List";
+            this.btnBack.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // StudentDetailsFormSHS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lbl);
             this.Controls.Add(this.statuslabel);
             this.Controls.Add(this.applicantNumberlabel);
@@ -2205,7 +2230,7 @@
             this.Controls.Add(this.enrolleesinformation);
             this.Location = new System.Drawing.Point(0, 100);
             this.Name = "StudentDetailsFormSHS";
-            this.Size = new System.Drawing.Size(992, 552);
+            this.Size = new System.Drawing.Size(992, 607);
             this.Load += new System.EventHandler(this.StudentDetailsFormSHS_Load);
             this.enrolleesinformation.ResumeLayout(false);
             this.enrolleesinfotab.ResumeLayout(false);
@@ -2380,5 +2405,6 @@
         private Guna.UI2.WinForms.Guna2VSeparator guna2VSeparator11;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbl;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
+        private Guna.UI2.WinForms.Guna2Button btnBack;
     }
 }

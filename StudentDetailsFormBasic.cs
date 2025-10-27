@@ -158,8 +158,7 @@ namespace CFCA_ADMIN
         // Add this event to the StudentDetailsFormBasic class
         public event EventHandler BackButtonClicked;
 
-        // Example usage: Raise this event when the Back button is clicked
-        private void btnBack_Click(object sender, EventArgs e)
+        private void btnBack_Click_1(object sender, EventArgs e)
         {
             BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }

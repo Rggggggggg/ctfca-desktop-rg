@@ -16,7 +16,6 @@ namespace CFCA_ADMIN
 {
     public partial class StudentDetailsFormSHS : UserControl
     {
-        public event EventHandler BackButtonClicked;
         public string StudentNumber { get; set; }
         public StudentDetailsFormSHS()
         {
@@ -215,6 +214,11 @@ namespace CFCA_ADMIN
                 MessageBox.Show($"Error loading siblings: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        public event EventHandler BackButtonClicked;
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

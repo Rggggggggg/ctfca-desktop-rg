@@ -29,23 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Students));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dtgStudents = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.photo = new System.Windows.Forms.DataGridViewImageColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Grades = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -79,23 +78,22 @@
             this.dtgStudents.AllowUserToDeleteRows = false;
             this.dtgStudents.AllowUserToResizeColumns = false;
             this.dtgStudents.AllowUserToResizeRows = false;
-            dataGridViewCellStyle57.BackColor = System.Drawing.Color.White;
-            this.dtgStudents.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle29.BackColor = System.Drawing.Color.White;
+            this.dtgStudents.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle29;
             this.dtgStudents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dtgStudents.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle58.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle58.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle58.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle58.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle58.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle58.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dtgStudents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle58;
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle30.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle30.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgStudents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle30;
             this.dtgStudents.ColumnHeadersHeight = 50;
             this.dtgStudents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.photo,
             this.id,
             this.name,
             this.Grades,
@@ -109,27 +107,27 @@
             this.btnDelete,
             this.btnGrades,
             this.btnPayment});
-            dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle64.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle64.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle64.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle64.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dtgStudents.DefaultCellStyle = dataGridViewCellStyle64;
+            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle36.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle36.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dtgStudents.DefaultCellStyle = dataGridViewCellStyle36;
             this.dtgStudents.EnableHeadersVisualStyles = true;
             this.dtgStudents.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dtgStudents.Location = new System.Drawing.Point(12, 86);
             this.dtgStudents.Name = "dtgStudents";
             this.dtgStudents.ReadOnly = true;
-            dataGridViewCellStyle65.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle65.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle65.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle65.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle65.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle65.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle65.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dtgStudents.RowHeadersDefaultCellStyle = dataGridViewCellStyle65;
+            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle37.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle37.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgStudents.RowHeadersDefaultCellStyle = dataGridViewCellStyle37;
             this.dtgStudents.RowHeadersVisible = false;
             this.dtgStudents.RowHeadersWidth = 51;
             this.dtgStudents.RowTemplate.Height = 60;
@@ -157,20 +155,6 @@
             this.dtgStudents.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dtgStudents.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             this.dtgStudents.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgStudents_CellContentClick);
-            // 
-            // photo
-            // 
-            dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle59.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle59.NullValue")));
-            dataGridViewCellStyle59.Padding = new System.Windows.Forms.Padding(2);
-            this.photo.DefaultCellStyle = dataGridViewCellStyle59;
-            this.photo.FillWeight = 60F;
-            this.photo.HeaderText = "Photo";
-            this.photo.Image = global::CFCA_ADMIN.Properties.Resources.no_image;
-            this.photo.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.photo.MinimumWidth = 6;
-            this.photo.Name = "photo";
-            this.photo.ReadOnly = true;
             // 
             // id
             // 
@@ -237,6 +221,9 @@
             // 
             // view_info
             // 
+            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle31.Padding = new System.Windows.Forms.Padding(5);
+            this.view_info.DefaultCellStyle = dataGridViewCellStyle31;
             this.view_info.FillWeight = 60F;
             this.view_info.HeaderText = "View Info";
             this.view_info.Name = "view_info";
@@ -247,11 +234,11 @@
             // btnConfirm
             // 
             this.btnConfirm.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle60.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle60.NullValue")));
-            dataGridViewCellStyle60.Padding = new System.Windows.Forms.Padding(5);
-            this.btnConfirm.DefaultCellStyle = dataGridViewCellStyle60;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle32.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle32.NullValue")));
+            dataGridViewCellStyle32.Padding = new System.Windows.Forms.Padding(5);
+            this.btnConfirm.DefaultCellStyle = dataGridViewCellStyle32;
             this.btnConfirm.FillWeight = 35F;
             this.btnConfirm.HeaderText = "Accept";
             this.btnConfirm.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
@@ -265,10 +252,10 @@
             // btnDelete
             // 
             this.btnDelete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle61.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle61.NullValue")));
-            dataGridViewCellStyle61.Padding = new System.Windows.Forms.Padding(5);
-            this.btnDelete.DefaultCellStyle = dataGridViewCellStyle61;
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle33.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle33.NullValue")));
+            dataGridViewCellStyle33.Padding = new System.Windows.Forms.Padding(5);
+            this.btnDelete.DefaultCellStyle = dataGridViewCellStyle33;
             this.btnDelete.FillWeight = 35F;
             this.btnDelete.HeaderText = "Decline";
             this.btnDelete.Image = global::CFCA_ADMIN.Properties.Resources.delete_square;
@@ -282,10 +269,10 @@
             // btnGrades
             // 
             this.btnGrades.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle62.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle62.NullValue = null;
-            dataGridViewCellStyle62.Padding = new System.Windows.Forms.Padding(5);
-            this.btnGrades.DefaultCellStyle = dataGridViewCellStyle62;
+            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle34.NullValue = null;
+            dataGridViewCellStyle34.Padding = new System.Windows.Forms.Padding(5);
+            this.btnGrades.DefaultCellStyle = dataGridViewCellStyle34;
             this.btnGrades.FillWeight = 35F;
             this.btnGrades.HeaderText = "Grading";
             this.btnGrades.Image = ((System.Drawing.Image)(resources.GetObject("btnGrades.Image")));
@@ -298,10 +285,10 @@
             // btnPayment
             // 
             this.btnPayment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle63.NullValue = null;
-            dataGridViewCellStyle63.Padding = new System.Windows.Forms.Padding(5);
-            this.btnPayment.DefaultCellStyle = dataGridViewCellStyle63;
+            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle35.NullValue = null;
+            dataGridViewCellStyle35.Padding = new System.Windows.Forms.Padding(5);
+            this.btnPayment.DefaultCellStyle = dataGridViewCellStyle35;
             this.btnPayment.FillWeight = 35F;
             this.btnPayment.HeaderText = "Payment";
             this.btnPayment.Image = ((System.Drawing.Image)(resources.GetObject("btnPayment.Image")));
@@ -314,10 +301,10 @@
             // 
             // dataGridViewImageColumn1
             // 
-            dataGridViewCellStyle66.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle66.NullValue = null;
-            dataGridViewCellStyle66.Padding = new System.Windows.Forms.Padding(10);
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle66;
+            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle38.NullValue = null;
+            dataGridViewCellStyle38.Padding = new System.Windows.Forms.Padding(10);
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle38;
             this.dataGridViewImageColumn1.FillWeight = 40F;
             this.dataGridViewImageColumn1.HeaderText = "";
             this.dataGridViewImageColumn1.Image = global::CFCA_ADMIN.Properties.Resources.edit_interface_sign;
@@ -330,10 +317,10 @@
             // 
             // dataGridViewImageColumn2
             // 
-            dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle67.NullValue = null;
-            dataGridViewCellStyle67.Padding = new System.Windows.Forms.Padding(10);
-            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle67;
+            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle39.NullValue = null;
+            dataGridViewCellStyle39.Padding = new System.Windows.Forms.Padding(10);
+            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle39;
             this.dataGridViewImageColumn2.FillWeight = 40F;
             this.dataGridViewImageColumn2.HeaderText = "";
             this.dataGridViewImageColumn2.Image = global::CFCA_ADMIN.Properties.Resources.delete_square;
@@ -346,10 +333,10 @@
             // 
             // dataGridViewImageColumn3
             // 
-            dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle68.NullValue = null;
-            dataGridViewCellStyle68.Padding = new System.Windows.Forms.Padding(5);
-            this.dataGridViewImageColumn3.DefaultCellStyle = dataGridViewCellStyle68;
+            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle40.NullValue = null;
+            dataGridViewCellStyle40.Padding = new System.Windows.Forms.Padding(5);
+            this.dataGridViewImageColumn3.DefaultCellStyle = dataGridViewCellStyle40;
             this.dataGridViewImageColumn3.FillWeight = 35F;
             this.dataGridViewImageColumn3.HeaderText = "";
             this.dataGridViewImageColumn3.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn3.Image")));
@@ -362,10 +349,10 @@
             // 
             // dataGridViewImageColumn4
             // 
-            dataGridViewCellStyle69.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle69.NullValue = null;
-            dataGridViewCellStyle69.Padding = new System.Windows.Forms.Padding(5);
-            this.dataGridViewImageColumn4.DefaultCellStyle = dataGridViewCellStyle69;
+            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle41.NullValue = null;
+            dataGridViewCellStyle41.Padding = new System.Windows.Forms.Padding(5);
+            this.dataGridViewImageColumn4.DefaultCellStyle = dataGridViewCellStyle41;
             this.dataGridViewImageColumn4.FillWeight = 35F;
             this.dataGridViewImageColumn4.HeaderText = "";
             this.dataGridViewImageColumn4.Image = global::CFCA_ADMIN.Properties.Resources.delete_square;
@@ -378,10 +365,10 @@
             // 
             // dataGridViewImageColumn5
             // 
-            dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle70.NullValue = null;
-            dataGridViewCellStyle70.Padding = new System.Windows.Forms.Padding(5);
-            this.dataGridViewImageColumn5.DefaultCellStyle = dataGridViewCellStyle70;
+            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle42.NullValue = null;
+            dataGridViewCellStyle42.Padding = new System.Windows.Forms.Padding(5);
+            this.dataGridViewImageColumn5.DefaultCellStyle = dataGridViewCellStyle42;
             this.dataGridViewImageColumn5.FillWeight = 35F;
             this.dataGridViewImageColumn5.HeaderText = "payment";
             this.dataGridViewImageColumn5.Image = global::CFCA_ADMIN.Properties.Resources.payment;
@@ -501,7 +488,7 @@
             this.btnPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnPrev.Image")));
             this.btnPrev.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPrev.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnPrev.Location = new System.Drawing.Point(514, 536);
+            this.btnPrev.Location = new System.Drawing.Point(502, 536);
             this.btnPrev.Name = "btnPrev";
             this.btnPrev.Size = new System.Drawing.Size(100, 45);
             this.btnPrev.TabIndex = 12;
@@ -513,11 +500,12 @@
             this.lblPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPageInfo.BackColor = System.Drawing.Color.Transparent;
             this.lblPageInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPageInfo.Location = new System.Drawing.Point(620, 551);
+            this.lblPageInfo.Location = new System.Drawing.Point(613, 551);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(90, 15);
             this.lblPageInfo.TabIndex = 13;
             this.lblPageInfo.Text = "guna2HtmlLabel1";
+            this.lblPageInfo.Click += new System.EventHandler(this.lblPageInfo_Click);
             // 
             // Students
             // 
@@ -548,7 +536,9 @@
         private Guna.UI2.WinForms.Guna2TextBox tbSearch;
         private Guna.UI2.WinForms.Guna2ComboBox cbGradeLevel;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
-        private System.Windows.Forms.DataGridViewImageColumn photo;
+        private Guna.UI2.WinForms.Guna2Button btnNext;
+        private Guna.UI2.WinForms.Guna2Button btnPrev;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblPageInfo;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Grades;
@@ -562,8 +552,5 @@
         private System.Windows.Forms.DataGridViewImageColumn btnDelete;
         private System.Windows.Forms.DataGridViewImageColumn btnGrades;
         private System.Windows.Forms.DataGridViewImageColumn btnPayment;
-        private Guna.UI2.WinForms.Guna2Button btnNext;
-        private Guna.UI2.WinForms.Guna2Button btnPrev;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblPageInfo;
     }
 }

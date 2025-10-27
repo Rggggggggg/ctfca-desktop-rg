@@ -78,11 +78,6 @@ namespace CFCA_ADMIN
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             using (var conn = Database.GetConnection())
@@ -148,6 +143,23 @@ namespace CFCA_ADMIN
                     MessageBox.Show("Error: " + ex.Message);
                 }
                
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            // Show confirmation dialog before canceling
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Cancel Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+
             }
         }
     }

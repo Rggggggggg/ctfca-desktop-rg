@@ -40,8 +40,7 @@ namespace CFCA_ADMIN
             }
         }
 
-
-        private void LoadControl(System.Windows.Forms.UserControl uc)
+        public void LoadControl(System.Windows.Forms.UserControl uc)
         {
             panelContainer.Controls.Clear();       // Clear previous controls
             uc.Dock = DockStyle.Fill;              // Make it fill the space
