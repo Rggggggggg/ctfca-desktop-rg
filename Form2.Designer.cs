@@ -73,7 +73,7 @@
             this.guna2Panel1.FillColor = System.Drawing.Color.White;
             this.guna2Panel1.Location = new System.Drawing.Point(211, 0);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(871, 66);
+            this.guna2Panel1.Size = new System.Drawing.Size(889, 66);
             this.guna2Panel1.TabIndex = 4;
             this.guna2Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel1_Paint);
             // 
@@ -83,7 +83,7 @@
             this.lblRole.BackColor = System.Drawing.Color.Transparent;
             this.lblRole.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRole.Location = new System.Drawing.Point(746, 35);
+            this.lblRole.Location = new System.Drawing.Point(764, 35);
             this.lblRole.Name = "lblRole";
             this.lblRole.Size = new System.Drawing.Size(26, 15);
             this.lblRole.TabIndex = 3;
@@ -95,7 +95,7 @@
             this.pic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pic.BackColor = System.Drawing.Color.Transparent;
             this.pic.ImageRotate = 0F;
-            this.pic.Location = new System.Drawing.Point(698, 11);
+            this.pic.Location = new System.Drawing.Point(716, 11);
             this.pic.Name = "pic";
             this.pic.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             this.pic.Size = new System.Drawing.Size(40, 40);
@@ -108,7 +108,7 @@
             this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblName.BackColor = System.Drawing.Color.Transparent;
             this.lblName.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(746, 14);
+            this.lblName.Location = new System.Drawing.Point(764, 14);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(33, 15);
             this.lblName.TabIndex = 1;
@@ -149,7 +149,7 @@
             this.guna2Panel2.FillColor = System.Drawing.Color.White;
             this.guna2Panel2.Location = new System.Drawing.Point(0, 0);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(211, 750);
+            this.guna2Panel2.Size = new System.Drawing.Size(211, 800);
             this.guna2Panel2.TabIndex = 3;
             this.guna2Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel2_Paint);
             // 
@@ -249,7 +249,7 @@
             this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(63)))), ((int)(((byte)(75)))));
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
             this.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnLogout.Location = new System.Drawing.Point(0, 709);
+            this.btnLogout.Location = new System.Drawing.Point(0, 759);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(211, 41);
             this.btnLogout.TabIndex = 7;
@@ -528,7 +528,7 @@
             this.panelContainer.FillColor = System.Drawing.Color.WhiteSmoke;
             this.panelContainer.Location = new System.Drawing.Point(211, 66);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(871, 684);
+            this.panelContainer.Size = new System.Drawing.Size(889, 734);
             this.panelContainer.TabIndex = 13;
             this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint_1);
             // 
@@ -537,7 +537,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1082, 750);
+            this.ClientSize = new System.Drawing.Size(1100, 800);
             this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);

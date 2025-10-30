@@ -416,6 +416,7 @@ namespace CFCA_ADMIN
                         row.Cells["Grades"].Value.ToString().ToLower().Contains(search) ||
                         row.Cells["strand"].Value.ToString().ToLower().Contains(search) ||
                         row.Cells["name"].Value.ToString().ToLower().Contains(search) ||
+                        row.Cells["id"].Value.ToString().ToLower().Contains(search) ||
                         row.Cells["payment_status"].Value.ToString().ToLower().Contains(search);
 
                     row.Visible = visible;

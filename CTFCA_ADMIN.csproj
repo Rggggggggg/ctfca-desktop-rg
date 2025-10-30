@@ -111,6 +111,9 @@
     <Reference Include="MySql.Data, Version=9.3.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>packages\MySql.Data.9.3.0\lib\net48\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="MySqlBackup, Version=2.6.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MySqlBackup.NET.2.6.5\lib\net48\MySqlBackup.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -459,6 +462,7 @@
     <EmbeddedResource Include="VerifyCodeForm.resx">
       <DependentUpon>VerifyCodeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Backup" />
     <None Include="CTFCA_ADMIN_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
